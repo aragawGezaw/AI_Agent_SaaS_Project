@@ -1,0 +1,10 @@
+---
+description: Rules for Node.js, Express.js API routes, controllers, and backend logic.
+globs: ["backend/src/**/*.ts", "backend/src/**/*.js"]
+---
+## Express.js & Backend Guidelines
+
+*   **Directory Structure:** Mirror the Feature-First organization (`backend/src/features/[feature_name]/`).
+*   **Strict Typing:** Use strict TypeScript typing for returns and variables. Avoid weak generic types like `Any` or `unknown`.
+*   **API Design:** Build RESTful APIs returning standard, predictable JSON responses with correct HTTP status codes (200, 201, 400, 401, 500).
+*   **Middleware:** Ensure robust middleware is in place for CORS, request logging, and global error handling.

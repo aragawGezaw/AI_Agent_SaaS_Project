@@ -1,0 +1,9 @@
+---
+description: Rules for PostgreSQL schema design, queries, and data integrity.
+globs: ["**/*.sql", "backend/src/db/**/*.ts", "backend/src/features/**/queries.ts"]
+---
+## PostgreSQL Database Guidelines
+
+*   **Schema Design:** Design highly normalized relational database schemas. Always use `UUID`s as primary keys, never auto-incrementing integers.
+*   **Data Integrity:** Enforce relationships using strict foreign key constraints and `ON DELETE CASCADE` to prevent orphaned records.
+*   **Database Interaction:** Use the `pg` driver to execute raw, optimized SQL queries with parameterized statements to prevent SQL injection.
