@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { query } = require('../db/index.js');
 
 /**
@@ -62,6 +63,70 @@ router.post('/register', async (req, res, next) => {
     return res.status(201).json({
       message: 'User registered successfully',
       user: newUser
+    });
+
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @route POST /api/auth/login
+ * @desc Authenticate user and get token
+ * @access Public
+ */
+router.post('/login', async (req, res, next) => {
+  try {
+    const { email, password } = req.body || {};
+
+    // 1. Validate required fields
+    if (!email || !password) {
+      return res.status(400).json({ 
+        error: 'Bad Request', 
+        message: 'Email and password are required' 
+      });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    // 2. Query user by email
+    const userResult = await query(
+      'SELECT id, email, password_hash, full_name, preferred_language, created_at, updated_at FROM users WHERE email = $1',
+      [normalizedEmail]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(401).json({ 
+        error: 'Unauthorized', 
+        message: 'Invalid email or password' 
+      });
+    }
+
+    const user = userResult.rows[0];
+
+    // 3. Compare hashed password
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({ 
+        error: 'Unauthorized', 
+        message: 'Invalid email or password' 
+      });
+    }
+
+    // 4. Generate JWT token
+    const token = jwt.sign(
+      { id: user.id },
+      process.env.JWT_SECRET || 'fallback_secret_change_me',
+      { expiresIn: '24h' }
+    );
+
+    // 5. Prepare user profile object (excluding password_hash)
+    const { password_hash, ...userProfile } = user;
+
+    return res.status(200).json({
+      message: 'Login successful',
+      token,
+      user: userProfile
     });
 
   } catch (error) {
