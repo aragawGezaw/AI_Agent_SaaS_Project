@@ -1,17 +1,17 @@
-const { Pool } = require('pg');
 require('dotenv').config();
+const { Pool } = require('pg');
 
 /**
  * PostgreSQL connection configuration
  * Uses DATABASE_URL if available, otherwise falls back to individual components
  */
 const poolConfig = process.env.DATABASE_URL
-  ? { connectionString: process.env.DATABASE_URL }
+  ? { connectionString: String(process.env.DATABASE_URL || '') }
   : {
       user: process.env.DB_USER,
       host: process.env.DB_HOST,
       database: process.env.DB_NAME,
-      password: process.env.DB_PASSWORD,
+      password: String(process.env.DB_PASSWORD || ''),
       port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 5432,
     };
 
