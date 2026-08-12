@@ -29,8 +29,9 @@ CREATE TABLE IF NOT EXISTS food_items (
 );
 
 -- Indices for JSONB language querying
-CREATE INDEX IF NOT EXISTS idx_food_items_name_en ON food_items USING GIN ((name ->> 'en'));
-CREATE INDEX IF NOT EXISTS idx_food_items_name_am ON food_items USING GIN ((name ->> 'am'));
+CREATE INDEX IF NOT EXISTS idx_food_items_name_gin ON food_items USING GIN (name);
+CREATE INDEX IF NOT EXISTS idx_food_items_name_en ON food_items ((name ->> 'en'));
+CREATE INDEX IF NOT EXISTS idx_food_items_name_am ON food_items ((name ->> 'am'));
 
 -- Trigger for automatically updating updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
