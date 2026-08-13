@@ -20,9 +20,11 @@ app.use(morgan('dev'));
 
 // Import routes
 const authRouter = require('./routes/auth.routes.js');
+const profileRouter = require('./routes/profile.routes.js');
 
 // Mount routes
 app.use('/api/auth', authRouter);
+app.use('/api/profile', profileRouter);
 
 /**
  * @route GET /api/health
