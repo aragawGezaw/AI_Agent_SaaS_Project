@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { query } = require('../db/index.js');
+const authenticateToken = require('../middleware/auth.middleware.js');
 
 /**
  * @route POST /api/auth/register
@@ -129,6 +130,35 @@ router.post('/login', async (req, res, next) => {
       user: userProfile
     });
 
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @route GET /api/auth/me
+ * @desc Get current user's profile
+ * @access Private
+ */
+router.get('/me', authenticateToken, async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    const userResult = await query(
+      'SELECT id, email, full_name, preferred_language, created_at FROM users WHERE id = $1',
+      [userId]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({
+        error: 'Not Found',
+        message: 'User not found'
+      });
+    }
+
+    const user = userResult.rows[0];
+
+    return res.status(200).json(user);
   } catch (error) {
     next(error);
   }
