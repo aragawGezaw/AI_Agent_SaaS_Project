@@ -164,4 +164,83 @@ router.get('/me', authenticateToken, async (req, res, next) => {
   }
 });
 
+/**
+ * @route PUT /api/auth/me
+ * @desc Update current user's profile
+ * @access Private
+ */
+router.put('/me', authenticateToken, async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const { full_name, preferred_language } = req.body || {};
+
+    // 1. Validate that at least one field is provided for update
+    if (!full_name && !preferred_language) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: 'At least one field (full_name or preferred_language) must be provided for update'
+      });
+    }
+
+    // 2. Dynamically construct SQL UPDATE query
+    const updates = [];
+    const values = [];
+    let paramIndex = 1;
+
+    if (full_name !== undefined) {
+      if (typeof full_name !== 'string' || !full_name.trim()) {
+        return res.status(400).json({
+          error: 'Bad Request',
+          message: 'Full name must be a non-empty string'
+        });
+      }
+      updates.push(`full_name = $${paramIndex++}`);
+      values.push(full_name.trim());
+    }
+
+    if (preferred_language !== undefined) {
+      if (typeof preferred_language !== 'string' || !preferred_language.trim()) {
+        return res.status(400).json({
+          error: 'Bad Request',
+          message: 'Preferred language must be a non-empty string'
+        });
+      }
+      updates.push(`preferred_language = $${paramIndex++}`);
+      values.push(preferred_language.trim());
+    }
+
+    // Add updated_at
+    updates.push(`updated_at = CURRENT_TIMESTAMP`);
+    
+    // Add userId to values for WHERE clause
+    values.push(userId);
+    const whereClauseParamIndex = paramIndex;
+
+    const updateQuery = `
+      UPDATE users 
+      SET ${updates.join(', ')} 
+      WHERE id = $${whereClauseParamIndex} 
+      RETURNING id, email, full_name, preferred_language, created_at, updated_at
+    `;
+
+    // 3. Execute the query
+    const updateResult = await query(updateQuery, values);
+
+    if (updateResult.rows.length === 0) {
+      return res.status(404).json({
+        error: 'Not Found',
+        message: 'User not found'
+      });
+    }
+
+    const updatedUser = updateResult.rows[0];
+
+    // 4. Return the updated user profile
+    return res.status(200).json(updatedUser);
+
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
