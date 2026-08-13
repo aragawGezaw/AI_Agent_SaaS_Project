@@ -243,4 +243,72 @@ router.put('/me', authenticateToken, async (req, res, next) => {
   }
 });
 
+/**
+ * @route PUT /api/auth/change-password
+ * @desc Change current user's password
+ * @access Private
+ */
+router.put('/change-password', authenticateToken, async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const { current_password, new_password } = req.body || {};
+
+    // 1. Validate fields
+    if (!current_password || !new_password) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: 'Current password and new password are required'
+      });
+    }
+
+    if (typeof new_password !== 'string' || new_password.length < 6) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: 'New password must be at least 6 characters long'
+      });
+    }
+
+    // 2. Get user's stored password hash
+    const userResult = await query(
+      'SELECT password_hash FROM users WHERE id = $1',
+      [userId]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({
+        error: 'Not Found',
+        message: 'User not found'
+      });
+    }
+
+    const storedHash = userResult.rows[0].password_hash;
+
+    // 3. Verify current password
+    const isMatch = await bcrypt.compare(current_password, storedHash);
+    if (!isMatch) {
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'Invalid current password'
+      });
+    }
+
+    // 4. Hash new password
+    const saltRounds = 10;
+    const newPasswordHash = await bcrypt.hash(new_password, saltRounds);
+
+    // 5. Update password in database
+    await query(
+      'UPDATE users SET password_hash = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2',
+      [newPasswordHash, userId]
+    );
+
+    return res.status(200).json({
+      message: 'Password updated successfully'
+    });
+
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
