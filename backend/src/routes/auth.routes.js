@@ -117,7 +117,7 @@ router.post('/login', async (req, res, next) => {
     // 4. Generate JWT token
     const token = jwt.sign(
       { id: user.id },
-      process.env.JWT_SECRET || 'fallback_secret_change_me',
+      process.env.JWT_SECRET || 'supersecretkey',
       { expiresIn: '24h' }
     );
 

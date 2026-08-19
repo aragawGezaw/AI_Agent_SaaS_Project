@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { query } = require('../db/index.js');
 const authenticateToken = require('../middleware/auth.middleware.js');
+const { generateAgentResponse } = require('../services/ai.service.js');
 
 /**
  * @route POST /api/chat/sessions
@@ -142,6 +143,78 @@ router.get('/sessions/:sessionId/messages', authenticateToken, async (req, res, 
     );
 
     return res.status(200).json(messagesResult.rows);
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @route POST /api/chat/sessions/:sessionId/generate
+ * @desc Generate an AI response for a chat session
+ * @access Private
+ */
+router.post('/sessions/:sessionId/generate', authenticateToken, async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const { sessionId } = req.params;
+    const { content } = req.body || {};
+
+    if (!content || typeof content !== 'string' || content.trim() === '') {
+      return res.status(400).json({
+        error: 'Invalid input',
+        message: 'Content is required and must be a non-empty string'
+      });
+    }
+
+    // 1. Validate sessionId exists and belongs to user
+    const sessionCheck = await query(
+      'SELECT id FROM chat_sessions WHERE id = $1 AND user_id = $2',
+      [sessionId, userId]
+    );
+
+    if (sessionCheck.rows.length === 0) {
+      return res.status(404).json({
+        error: 'Not Found',
+        message: 'Chat session not found or does not belong to user'
+      });
+    }
+
+    // 2. Save user message to 'chat_messages'
+    const insertUserMessageQuery = `
+      INSERT INTO chat_messages (session_id, sender, content)
+      VALUES ($1, 'user', $2)
+      RETURNING id, session_id, sender, content, metadata, created_at
+    `;
+    const userMessageResult = await query(insertUserMessageQuery, [sessionId, content.trim()]);
+    const userMessage = userMessageResult.rows[0];
+
+    // 3. Call generateAgentResponse service
+    const agentResponseText = await generateAgentResponse({
+      userId,
+      sessionId,
+      promptText: content.trim()
+    });
+
+    // 4. Save the returned agent message to 'chat_messages'
+    const insertAgentMessageQuery = `
+      INSERT INTO chat_messages (session_id, sender, content)
+      VALUES ($1, 'agent', $2)
+      RETURNING id, session_id, sender, content, metadata, created_at
+    `;
+    const agentMessageResult = await query(insertAgentMessageQuery, [sessionId, agentResponseText]);
+    const agentMessage = agentMessageResult.rows[0];
+
+    // 5. Update session updated_at
+    await query(
+      'UPDATE chat_sessions SET updated_at = CURRENT_TIMESTAMP WHERE id = $1',
+      [sessionId]
+    );
+
+    // 6. Return both user and agent message objects
+    return res.status(200).json({
+      userMessage,
+      agentMessage
+    });
   } catch (error) {
     next(error);
   }

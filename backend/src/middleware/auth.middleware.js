@@ -26,7 +26,7 @@ const authMiddleware = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_change_me', (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET || 'supersecretkey', (err, decoded) => {
     if (err) {
       return res.status(403).json({
         error: 'Forbidden',
