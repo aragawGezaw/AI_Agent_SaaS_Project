@@ -13,7 +13,14 @@ app.use(cors({
 }));
 
 // Configure JSON body parser middleware
-app.use(express.json());
+// Skip JSON parsing for Stripe webhooks
+app.use((req, res, next) => {
+  if (req.originalUrl === '/api/subscription/webhook') {
+    next();
+  } else {
+    express.json()(req, res, next);
+  }
+});
 
 // Request logging middleware
 app.use(morgan('dev'));
@@ -23,12 +30,14 @@ const authRouter = require('./routes/auth.routes.js');
 const profileRouter = require('./routes/profile.routes.js');
 const nutritionRouter = require('./routes/nutrition.routes.js');
 const chatRouter = require('./routes/chat.routes.js');
+const subscriptionRouter = require('./routes/subscription.routes.js');
 
 // Mount routes
 app.use('/api/auth', authRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/nutrition', nutritionRouter);
 app.use('/api/chat', chatRouter);
+app.use('/api/subscription', subscriptionRouter);
 
 /**
  * @route GET /api/health

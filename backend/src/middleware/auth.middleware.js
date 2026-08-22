@@ -26,14 +26,19 @@ const authMiddleware = (req, res, next) => {
     });
   }
 
+  console.log('[AuthMiddleware] Incoming Auth Header:', authHeader);
+  console.log('[AuthMiddleware] process.env.JWT_SECRET:', process.env.JWT_SECRET || 'supersecretkey');
+
   jwt.verify(token, process.env.JWT_SECRET || 'supersecretkey', (err, decoded) => {
     if (err) {
+      console.error('[AuthMiddleware] jwt.verify Error:', err);
       return res.status(403).json({
         error: 'Forbidden',
         message: 'Token is invalid or expired'
       });
     }
 
+    console.log('[AuthMiddleware] Decoded payload:', decoded);
     req.user = decoded;
     next();
   });
