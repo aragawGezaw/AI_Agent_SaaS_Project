@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'auth_state.dart';
 import '../../core/storage/secure_storage_service.dart';
+import '../../core/providers/language_provider.dart';
+import '../../l10n/app_localizations.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -138,9 +140,43 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     Provider.of<AuthState>(context);
+    final languageProvider = Provider.of<LanguageProvider>(context);
+    final isAmharic = languageProvider.locale.languageCode == 'am';
+    final localizations = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(_isRegistering ? 'Register' : 'Login')),
+      appBar: AppBar(
+        title: Text(
+          _isRegistering
+              ? (localizations?.registerTitle ?? 'Register')
+              : (localizations?.loginTitle ?? 'Login'),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: DropdownButton<String>(
+              value: languageProvider.locale.languageCode,
+              icon: const Icon(Icons.language, color: Colors.green),
+              underline: const SizedBox(),
+              onChanged: (String? newValue) {
+                if (newValue != null) {
+                  languageProvider.changeLanguage(newValue);
+                }
+              },
+              items: const [
+                DropdownMenuItem(
+                  value: 'en',
+                  child: Text('English'),
+                ),
+                DropdownMenuItem(
+                  value: 'am',
+                  child: Text('አማርኛ'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -151,15 +187,19 @@ class _AuthScreenState extends State<AuthScreen> {
               children: [
                 if (_isRegistering) ...[
                   TextFormField(
-                    decoration: const InputDecoration(labelText: 'Email'),
+                    decoration: InputDecoration(
+                      labelText: localizations?.emailLabel ?? 'Email',
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Email is required';
+                        return isAmharic ? 'ኢሜይል ያስፈልጋል' : 'Email is required';
                       }
                       if (!RegExp(
                         r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                       ).hasMatch(value)) {
-                        return 'Invalid email format';
+                        return isAmharic
+                            ? 'ልክ ያልሆነ የኢሜይል ቅርጸት'
+                            : 'Invalid email format';
                       }
                       return null;
                     },
@@ -168,13 +208,19 @@ class _AuthScreenState extends State<AuthScreen> {
                   const SizedBox(height: 12),
                   TextFormField(
                     obscureText: true,
-                    decoration: const InputDecoration(labelText: 'Password'),
+                    decoration: InputDecoration(
+                      labelText: localizations?.passwordLabel ?? 'Password',
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Password is required';
+                        return isAmharic
+                            ? 'የይለፍ ቃል ያስፈልጋል'
+                            : 'Password is required';
                       }
                       if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
+                        return isAmharic
+                            ? 'የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት'
+                            : 'Password must be at least 6 characters';
                       }
                       return null;
                     },
@@ -182,10 +228,14 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
-                    decoration: const InputDecoration(labelText: 'Full Name'),
+                    decoration: InputDecoration(
+                      labelText: isAmharic ? 'ሙሉ ስም' : 'Full Name',
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Full name is required';
+                        return isAmharic
+                            ? 'ሙሉ ስም ያስፈልጋል'
+                            : 'Full name is required';
                       }
                       return null;
                     },
@@ -193,12 +243,15 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Preferred Language (e.g., am)',
+                    key: ValueKey(languageProvider.locale.languageCode),
+                    initialValue: languageProvider.locale.languageCode,
+                    decoration: InputDecoration(
+                      labelText: isAmharic ? 'የተመረጠ ቋንቋ' : 'Preferred Language',
                     ),
+                    readOnly: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Language is required';
+                        return isAmharic ? 'ቋንቋ ያስፈልጋል' : 'Language is required';
                       }
                       return null;
                     },
@@ -210,19 +263,25 @@ class _AuthScreenState extends State<AuthScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),
-                    child: const Text('Register'),
+                    child: Text(
+                      localizations?.registerButton ?? 'Register',
+                    ),
                   ),
                 ] else ...[
                   TextFormField(
-                    decoration: const InputDecoration(labelText: 'Email'),
+                    decoration: InputDecoration(
+                      labelText: localizations?.emailLabel ?? 'Email',
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Email is required';
+                        return isAmharic ? 'ኢሜይል ያስፈልጋል' : 'Email is required';
                       }
                       if (!RegExp(
                         r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                       ).hasMatch(value)) {
-                        return 'Invalid email format';
+                        return isAmharic
+                            ? 'ልክ ያልሆነ የኢሜይል ቅርጸት'
+                            : 'Invalid email format';
                       }
                       return null;
                     },
@@ -231,10 +290,14 @@ class _AuthScreenState extends State<AuthScreen> {
                   const SizedBox(height: 12),
                   TextFormField(
                     obscureText: true,
-                    decoration: const InputDecoration(labelText: 'Password'),
+                    decoration: InputDecoration(
+                      labelText: localizations?.passwordLabel ?? 'Password',
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Password is required';
+                        return isAmharic
+                            ? 'የይለፍ ቃል ያስፈልጋል'
+                            : 'Password is required';
                       }
                       return null;
                     },
@@ -246,7 +309,9 @@ class _AuthScreenState extends State<AuthScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                     ),
-                    child: const Text('Login'),
+                    child: Text(
+                      localizations?.loginButton ?? 'Login',
+                    ),
                   ),
                 ],
                 if (_errorMessage.isNotEmpty) ...[
@@ -267,8 +332,12 @@ class _AuthScreenState extends State<AuthScreen> {
           onPressed: _isRegistering ? _switchToLogin : _switchToRegister,
           child: Text(
             _isRegistering
-                ? 'Already have an account? Login'
-                : 'Don\'t have an account? Register',
+                ? (isAmharic
+                    ? 'አካውንት አለዎት? ይግቡ'
+                    : 'Already have an account? Login')
+                : (isAmharic
+                    ? 'አካውንት የለዎትም? ይመዝገቡ'
+                    : 'Don\'t have an account? Register'),
           ),
         ),
       ),

@@ -7,3 +7,10 @@ globs: ["**/*.sql", "backend/src/db/**/*.ts", "backend/src/features/**/queries.t
 *   **Schema Design:** Design highly normalized relational database schemas. Always use `UUID`s as primary keys, never auto-incrementing integers.
 *   **Data Integrity:** Enforce relationships using strict foreign key constraints and `ON DELETE CASCADE` to prevent orphaned records.
 *   **Database Interaction:** Use the `pg` driver to execute raw, optimized SQL queries with parameterized statements to prevent SQL injection.
+
+## Internationalization & Bilingual Rules (Amharic & English)
+
+* **Default Language Preference:** The `users` table must include a `preferred_language` column (e.g., `VARCHAR(5) DEFAULT 'am'`).
+* **Dynamic Multilingual Content:** Use `JSONB` columns for human-readable content that requires translation (e.g., `name JSONB NOT NULL`, `description JSONB`).
+* **JSONB Structure Standard:** Multilingual JSONB fields must strictly follow the schema: `{"en": "...", "am": "..."}`.
+* **Fallback Behavior:** API queries must be written to return the requested language (`am` or `en`), falling back to English (`en`) if the Amharic translation is missing.

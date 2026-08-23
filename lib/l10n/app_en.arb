@@ -1,0 +1,9 @@
+{
+  "appTitle": "Smart Nutrition",
+  "loginTitle": "Welcome Back",
+  "registerTitle": "Create Account",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "loginButton": "Login",
+  "registerButton": "Register"
+}

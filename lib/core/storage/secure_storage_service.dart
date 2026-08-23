@@ -38,4 +38,12 @@ class SecureStorageService {
   Future<void> removeSession() async {
     await _storage.delete(key: 'session_data');
   }
+
+  Future<void> saveLanguage(String languageCode) async {
+    await _storage.write(key: 'preferred_language', value: languageCode);
+  }
+
+  Future<String?> getLanguage() async {
+    return await _storage.read(key: 'preferred_language');
+  }
 }

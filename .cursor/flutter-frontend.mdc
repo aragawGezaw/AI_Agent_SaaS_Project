@@ -1,0 +1,10 @@
+---
+description: Rules for Flutter UI, state management, and Dart code.
+globs: ["lib/**/*.dart"]
+---
+## Flutter & Dart Guidelines
+
+*   **Directory Structure:** `lib/features/[feature_name]/` must contain its own `/models`, `/views`, `/controllers`, and `/repositories`.
+*   **UI/UX:** Build clean, modern, and accessible user interfaces. Prioritize smooth onboarding screen experiences.
+*   **State Management:** Keep business logic completely separated from UI components using a predictable state management solution.
+*   **Error Handling:** Implement global error boundaries and user-friendly error messages for failed API calls.
