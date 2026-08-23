@@ -1,0 +1,38 @@
+# AI Agent SaaS Project - Cline Agent Rules
+
+## 1. Project Context & Stack
+- **Project Name:** Smart Nutrition and Health SaaS
+- **Backend:** Node.js / Express running at `http://localhost:5000/api` (PostgreSQL DB, JWT Auth, Gemini AI API).
+- **Frontend:** Flutter (Mobile, Desktop, Web).
+
+## 2. Directory Structure & Architecture
+- `backend/`: Node.js Express server.
+- `lib/`: Flutter source directory:
+  - `lib/core/`: Network clients (Dio/HTTP), constants, theme, secure storage.
+  - `lib/features/`: Feature modules (`auth`, `chat`, `subscription`, `nutrition`) for UI screens, models, & controllers.
+  - `lib/shared/`: Reusable UI widgets (buttons, inputs, indicators).
+
+## 3. Flutter Coding Standards
+- **Decoupled Architecture:** Never place API network calls directly inside UI Widget `build()` methods.
+- **Authentication:** Use `flutter_secure_storage` to store JWT tokens. Automatically attach `Authorization: Bearer <token>` to protected network requests via interceptors.
+- **State Management:** Use [Insert Your Preferred Package: e.g., Riverpod / Provider / BLoC] for managing loading, error, and success UI states. Do not mix state management solutions.
+- **Error Handling:** Gracefully catch HTTP errors (401, 403, 500) and display actionable user-facing messages.
+
+## 4. Operational Guardrails
+- **Environment Secrets:** Never hardcode secret keys or JWT secrets into Dart files.
+- **Backend Protection:** Do not modify backend code or database migration files while working on frontend tasks unless explicitly instructed.
+
+## 5. Verification Commands
+- Run `flutter pub get` whenever updating `pubspec.yaml`.
+- Run `flutter analyze` after completing UI or feature changes to ensure zero compiler warnings.
+
+## 6. Smart Nutrition & Localization Rules
+- **Multilingual Support:** All UI text strings must be structured for localization (Amharic 'am' and English 'en') using `.arb` files in `lib/l10n/`.
+- **Font Rendering:** Ensure the `core/theme` implements appropriate font families (e.g., Noto Sans Ethiopic) to prevent missing character renders in Amharic.
+- **Food Data Handling:** Keep food nutrient calculations decoupled from UI code; place DTOs inside `lib/features/nutrition/models/`.
+
+## 7. Cultural & Conceptual Localization (Amharic & English)
+- **Conceptual Translation:** NEVER perform direct word-for-word machine translations. Adapt all health, nutrition, and UI messaging conceptually to fit local Ethiopian food culture and idiom.
+- **Nutritional Context:** Default food portion examples, meal recommendations, and advice should natively reference local staples (e.g., Teff, Injera, Shiro, legumes) alongside global foods.
+- **Fasting Awareness (የጾም ወቅት):** UI and backend AI models must account for Ethiopian Orthodox fasting periods when generating meal plans or nutritional advice.
+- **AI Prompts:** When generating system instructions or prompts for the Gemini AI API, you must embed these cultural and fasting constraints directly into the prompt templates.
