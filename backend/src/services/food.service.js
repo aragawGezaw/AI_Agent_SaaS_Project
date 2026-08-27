@@ -19,7 +19,7 @@ class FoodService {
     if (source) {
       sql = `
         SELECT * FROM foods
-        WHERE name_en ILIKE $1 AND source = $2
+        WHERE (name_en ILIKE $1 OR name_am ILIKE $1) AND source = $2
         ORDER BY name_en ASC
         LIMIT $3
       `;
@@ -27,7 +27,7 @@ class FoodService {
     } else {
       sql = `
         SELECT * FROM foods
-        WHERE name_en ILIKE $1
+        WHERE (name_en ILIKE $1 OR name_am ILIKE $1)
         ORDER BY name_en ASC
         LIMIT $2
       `;

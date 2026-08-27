@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'features/auth/auth_state.dart';
 import 'features/auth/auth_screen.dart';
+import 'features/nutrition/screens/meal_logging_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'core/providers/language_provider.dart';
 
@@ -28,11 +29,29 @@ class MyApp extends StatelessWidget {
             home: const AuthScreen(),
             routes: {
               '/home': (context) => Scaffold(
-                appBar: AppBar(title: const Text('Home')),
-                body: const Center(
-                  child: Text('Welcome to Smart Nutrition & Health Home!'),
+                appBar: AppBar(title: const Text('Smart Nutrition & Health')),
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Welcome to Smart Nutrition & Health Home!', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 20),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.green, foregroundColor: Colors.white),
+                        icon: const Icon(Icons.restaurant_menu_rounded),
+                        label: const Text('Open Meal Logger & GL Tracker'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const MealLoggingScreen()),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
+              '/meal-logging': (context) => const MealLoggingScreen(),
             },
             debugShowCheckedModeBanner: false,
             // Phase 2 Localization Setup
