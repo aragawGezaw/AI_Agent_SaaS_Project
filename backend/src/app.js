@@ -31,6 +31,7 @@ const profileRouter = require('./routes/profile.routes.js');
 const nutritionRouter = require('./routes/nutrition.routes.js');
 const chatRouter = require('./routes/chat.routes.js');
 const subscriptionRouter = require('./routes/subscription.routes.js');
+const foodRouter = require('./routes/food.routes.js');
 
 // Mount routes
 app.use('/api/auth', authRouter);
@@ -38,6 +39,7 @@ app.use('/api/profile', profileRouter);
 app.use('/api/nutrition', nutritionRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/subscription', subscriptionRouter);
+app.use('/api/foods', foodRouter);
 
 /**
  * @route GET /api/health
