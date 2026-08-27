@@ -2,6 +2,54 @@ const express = require('express');
 const router = express.Router();
 const { query } = require('../db/index.js');
 const authenticateToken = require('../middleware/auth.middleware.js');
+const NutritionService = require('../services/nutrition.service.js');
+
+/**
+ * @route POST /api/nutrition/analyze-meal
+ * @desc Analyze a meal: calculate calories, macros, net carbs, and total Glycemic Load
+ * @access Private
+ *
+ * Body: { items: [{ food_id: string, portion_g: number }] }
+ * Returns per-item breakdown, totals, total GL, and AI-structured evaluation note.
+ */
+router.post('/analyze-meal', authenticateToken, async (req, res, next) => {
+  try {
+    const { items } = req.body || {};
+
+    // Validate items array
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: '"items" must be a non-empty array of { food_id, portion_g }',
+      });
+    }
+
+    // Validate each item
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    for (const item of items) {
+      if (!item.food_id || !uuidRegex.test(item.food_id)) {
+        return res.status(400).json({
+          error: 'Bad Request',
+          message: `Invalid food_id: "${item.food_id}". Must be a valid UUID.`,
+        });
+      }
+      const portion = Number(item.portion_g);
+      if (isNaN(portion) || portion <= 0) {
+        return res.status(400).json({
+          error: 'Bad Request',
+          message: `Invalid portion_g for food_id "${item.food_id}". Must be a positive number.`,
+        });
+      }
+    }
+
+    // Analyze the meal using NutritionService
+    const analysis = await NutritionService.analyzeMeal(items);
+
+    return res.status(200).json(analysis);
+  } catch (error) {
+    next(error);
+  }
+});
 
 /**
  * @route POST /api/nutrition
