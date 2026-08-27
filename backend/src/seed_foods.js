@@ -10,7 +10,7 @@ const { query, pool } = require('./db/index.js');
 const indigenousEthiopianFoods = [
   {
     name_en: 'Injera',
-    name_am: 'እንጋራ',
+    name_am: 'እንጀራ',
     calories_per_100g: 38.0,
     protein_g: 3.3,
     carbs_g: 79.0,
@@ -21,7 +21,7 @@ const indigenousEthiopianFoods = [
   },
   {
     name_en: 'Shiro',
-    name_am: 'ሽር',
+    name_am: 'ሽሮ',
     calories_per_100g: 158.0,
     protein_g: 11.0,
     carbs_g: 11.0,
@@ -32,7 +32,7 @@ const indigenousEthiopianFoods = [
   },
   {
     name_en: 'Teff',
-    name_am: 'ተፍ',
+    name_am: 'ጤፍ',
     calories_per_100g: 367.0,
     protein_g: 13.3,
     carbs_g: 73.0,
@@ -43,7 +43,7 @@ const indigenousEthiopianFoods = [
   },
   {
     name_en: 'Kocho',
-    name_am: 'ቆጦ',
+    name_am: 'ቆጮ',
     calories_per_100g: 120.0,
     protein_g: 2.5,
     carbs_g: 27.0,
@@ -57,7 +57,7 @@ const indigenousEthiopianFoods = [
 const globalFoods = [
   {
     name_en: 'Brown Rice',
-    name_am: 'ቅርብ ሲሊሰር',
+    name_am: 'ቡናማ ሩዝ',
     calories_per_100g: 111.0,
     protein_g: 2.6,
     carbs_g: 23.0,
@@ -68,7 +68,7 @@ const globalFoods = [
   },
   {
     name_en: 'White Rice',
-    name_am: 'ቅርብ ቁልቲ',
+    name_am: 'ነጭ ሩዝ',
     calories_per_100g: 130.0,
     protein_g: 2.7,
     carbs_g: 28.0,
@@ -79,7 +79,7 @@ const globalFoods = [
   },
   {
     name_en: 'Wheat Flour',
-    name_am: 'ጣራ ብሩት',
+    name_am: 'የስንዴ ዱቄት',
     calories_per_100g: 364.0,
     protein_g: 10.3,
     carbs_g: 76.0,
@@ -90,7 +90,7 @@ const globalFoods = [
   },
   {
     name_en: 'Lentils',
-    name_am: 'ርግጥ',
+    name_am: 'ምስር',
     calories_per_100g: 116.0,
     protein_g: 9.0,
     carbs_g: 20.0,
@@ -101,7 +101,7 @@ const globalFoods = [
   },
   {
     name_en: 'Banana',
-    name_am: 'ጦታ',
+    name_am: 'ሙዝ',
     calories_per_100g: 89.0,
     protein_g: 1.1,
     carbs_g: 22.8,
@@ -115,7 +115,15 @@ const globalFoods = [
 const insertFoodQuery = `
   INSERT INTO foods (name_en, name_am, calories_per_100g, protein_g, carbs_g, fiber_g, fat_g, glycemic_index, source)
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-  ON CONFLICT DO NOTHING;
+  ON CONFLICT (name_en) DO UPDATE SET
+    name_am           = EXCLUDED.name_am,
+    calories_per_100g = EXCLUDED.calories_per_100g,
+    protein_g         = EXCLUDED.protein_g,
+    carbs_g           = EXCLUDED.carbs_g,
+    fiber_g           = EXCLUDED.fiber_g,
+    fat_g             = EXCLUDED.fat_g,
+    glycemic_index    = EXCLUDED.glycemic_index,
+    updated_at         = CURRENT_TIMESTAMP;
 `;
 
 /**
