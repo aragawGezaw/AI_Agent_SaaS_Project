@@ -1,9 +1,9 @@
 {
-  "appTitle": "ቤተ ቁጥር ቤት ተለያዩል",
-  "loginTitle": "ደህናና ተገናኙ",
-  "registerTitle": "ደህናና ተግባር",
+  "appTitle": "ስማርት አምጋገብ እና ጤና",
+  "loginTitle": "እንኳን ደህና መጡ",
+  "registerTitle": "አካውንት ይፍጠሩ",
   "emailLabel": "ኢሜይል",
-  "passwordLabel": "ቃል",
-  "loginButton": "ቀጥታ ተለይ",
-  "registerButton": "ቀጥታ ተገናኙ"
+  "passwordLabel": "የይለፍ ቃል",
+  "loginButton": "ግባ",
+  "registerButton": "ተመዝገብ"
 }

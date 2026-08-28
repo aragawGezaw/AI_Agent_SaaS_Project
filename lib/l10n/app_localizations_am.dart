@@ -9,23 +9,23 @@ class AppLocalizationsAm extends AppLocalizations {
   AppLocalizationsAm([String locale = 'am']) : super(locale);
 
   @override
-  String get appTitle => 'ቤተ ቁጥር ቤት ተለያዩል';
+  String get appTitle => 'ስማርት አምጋገብ እና ጤና';
 
   @override
-  String get loginTitle => 'ደህናና ተገናኙ';
+  String get loginTitle => 'እንኳን ደህና መጡ';
 
   @override
-  String get registerTitle => 'ደህናና ተግባር';
+  String get registerTitle => 'አካውንት ይፍጠሩ';
 
   @override
   String get emailLabel => 'ኢሜይል';
 
   @override
-  String get passwordLabel => 'ቃል';
+  String get passwordLabel => 'የይለፍ ቃል';
 
   @override
-  String get loginButton => 'ቀጥታ ተለይ';
+  String get loginButton => 'ግባ';
 
   @override
-  String get registerButton => 'ቀጥታ ተገናኙ';
+  String get registerButton => 'ተመዝገብ';
 }
