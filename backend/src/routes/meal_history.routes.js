@@ -89,14 +89,14 @@ router.get('/trends', authenticateToken, async (req, res, next) => {
 
     const trendsQuery = `
       SELECT 
-        DATE(logged_at AT TIME ZONE 'Africa/Addis_Ababa') AS day,
+        TO_CHAR(logged_at AT TIME ZONE 'Africa/Addis_Ababa', 'YYYY-MM-DD') AS day,
         COALESCE(SUM(calories), 0)::INTEGER AS total_calories,
         COALESCE(SUM(total_glycemic_load), 0)::NUMERIC(10,2) AS total_glycemic_load
       FROM user_meals
       WHERE user_id = $1
-        AND logged_at >= $2::date
-        AND logged_at < ($3::date + INTERVAL '1 day')
-      GROUP BY DATE(logged_at AT TIME ZONE 'Africa/Addis_Ababa')
+        AND (logged_at AT TIME ZONE 'Africa/Addis_Ababa')::date >= $2::date
+        AND (logged_at AT TIME ZONE 'Africa/Addis_Ababa')::date <= $3::date
+      GROUP BY TO_CHAR(logged_at AT TIME ZONE 'Africa/Addis_Ababa', 'YYYY-MM-DD')
       ORDER BY day ASC
     `;
 

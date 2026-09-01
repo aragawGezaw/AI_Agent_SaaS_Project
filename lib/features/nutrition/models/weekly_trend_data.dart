@@ -13,10 +13,15 @@ class DailyTrend {
   });
 
   factory DailyTrend.fromJson(Map<String, dynamic> json) {
+    String dayVal = json['day'] as String? ?? '';
+    if (dayVal.contains('T')) {
+      dayVal = dayVal.split('T').first;
+    }
     return DailyTrend(
-      day: json['day'] as String? ?? '',
+      day: dayVal,
       totalCalories: (json['total_calories'] as num?)?.toInt() ?? 0,
-      totalGlycemicLoad: (json['total_glycemic_load'] as num?)?.toDouble() ?? 0.0,
+      totalGlycemicLoad:
+          (json['total_glycemic_load'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
@@ -46,12 +51,6 @@ class WeeklyTrendResponse {
 }
 
 /// Threshold constants used for colour-coding the bar chart.
-///
-/// These align with the GL classification logic used elsewhere in the app
-/// and are inspired by Ethiopian dietary guidance:
-///   • Low   — ≤ 10 GL   (ዝቅተኛ)  → green
-///   • Medium — ≤ 20 GL  (መካከለኛ) → orange
-///   • High  — > 20 GL   (ከፍተኛ)  → red
 enum TrendThreshold { low, medium, high }
 
 TrendThreshold classifyGL(double gl) {

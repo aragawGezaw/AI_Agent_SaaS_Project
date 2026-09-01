@@ -16,27 +16,34 @@ class WeeklyTrendsCard extends StatelessWidget {
     this.error,
   });
 
-  Color _glThresholdColor(double glycemicLoad) {
-    if (glycemicLoad <= 10) return const Color(0xFF2E7D32);
-    if (glycemicLoad <= 20) return const Color(0xFFE65100);
-    return const Color(0xFFC62828);
-  }
-
   String _getMonthAbbreviation(int month, AppLocalizations localizations) {
     switch (month) {
-      case 1: return localizations.jan;
-      case 2: return localizations.feb;
-      case 3: return localizations.mar;
-      case 4: return localizations.apr;
-      case 5: return localizations.may;
-      case 6: return localizations.jun;
-      case 7: return localizations.jul;
-      case 8: return localizations.aug;
-      case 9: return localizations.sep;
-      case 10: return localizations.oct;
-      case 11: return localizations.nov;
-      case 12: return localizations.dec;
-      default: return '';
+      case 1:
+        return localizations.jan;
+      case 2:
+        return localizations.feb;
+      case 3:
+        return localizations.mar;
+      case 4:
+        return localizations.apr;
+      case 5:
+        return localizations.may;
+      case 6:
+        return localizations.jun;
+      case 7:
+        return localizations.jul;
+      case 8:
+        return localizations.aug;
+      case 9:
+        return localizations.sep;
+      case 10:
+        return localizations.oct;
+      case 11:
+        return localizations.nov;
+      case 12:
+        return localizations.dec;
+      default:
+        return '';
     }
   }
 
@@ -97,22 +104,23 @@ class WeeklyTrendsCard extends StatelessWidget {
     bool isAm,
     List<DailyTrend> trends,
   ) {
-    final reversed = List<DailyTrend>.from(trends).reversed.toList();
+    // Preserves chronological order (oldest August dates on the left, newest September on the right)
+    final chartData = List<DailyTrend>.from(trends);
     return SizedBox(
       height: 200,
       child: BarChart(
         BarChartData(
           alignment: BarChartAlignment.spaceAround,
-          maxY: _computeMaxY(reversed),
+          maxY: _computeMaxY(chartData),
           minY: 0,
-          titlesData: _buildTitlesData(reversed, localizations, isAm),
+          titlesData: _buildTitlesData(chartData, localizations, isAm),
           borderData: FlBorderData(show: false),
           gridData: const FlGridData(
             show: true,
             drawHorizontalLine: true,
             drawVerticalLine: false,
           ),
-          barGroups: _buildBarGroups(reversed),
+          barGroups: _buildBarGroups(chartData),
         ),
       ),
     );
@@ -173,7 +181,8 @@ class WeeklyTrendsCard extends StatelessWidget {
     return trends.asMap().entries.map((entry) {
       final idx = entry.key;
       final trend = entry.value;
-      final glColor = _glThresholdColor(trend.totalGlycemicLoad);
+      // Uses the shared model helper functions from weekly_trend_data.dart
+      final glColor = glThresholdColor(classifyGL(trend.totalGlycemicLoad));
       return BarChartGroupData(
         x: idx,
         barRods: [
@@ -181,9 +190,7 @@ class WeeklyTrendsCard extends StatelessWidget {
             toY: trend.totalCalories.toDouble(),
             color: glColor,
             width: 16,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(4),
-            ),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
           ),
         ],
       );
@@ -193,9 +200,15 @@ class WeeklyTrendsCard extends StatelessWidget {
   double _computeMaxY(List<DailyTrend> trends) {
     if (trends.isEmpty) return 100.0;
     final maxCalories =
-        trends.map((t) => t.totalCalories.toDouble()).reduce((a, b) => a > b ? a : b) * 1.2;
+        trends
+            .map((t) => t.totalCalories.toDouble())
+            .reduce((a, b) => a > b ? a : b) *
+        1.2;
     final maxGL =
-        trends.map((t) => t.totalGlycemicLoad).reduce((a, b) => a > b ? a : b) * 1.2;
-    return maxCalories > maxGL ? maxCalories.ceilToDouble() : maxGL.ceilToDouble();
+        trends.map((t) => t.totalGlycemicLoad).reduce((a, b) => a > b ? a : b) *
+        1.2;
+
+    final calculatedMax = maxCalories > maxGL ? maxCalories : maxGL;
+    return calculatedMax < 50.0 ? 100.0 : calculatedMax.ceilToDouble();
   }
 }
