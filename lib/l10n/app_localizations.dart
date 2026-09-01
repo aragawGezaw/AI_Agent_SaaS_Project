@@ -139,6 +139,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Register'**
   String get registerButton;
+
+  /// No description provided for @mealHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal History'**
+  String get mealHistory;
+
+  /// No description provided for @mealHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Nutritional Journey'**
+  String get mealHistoryTitle;
+
+  /// No description provided for @noMealsLogged.
+  ///
+  /// In en, this message translates to:
+  /// **'No meals logged yet. Start tracking your nutrition!'**
+  String get noMealsLogged;
+
+  /// No description provided for @deleteMeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Meal'**
+  String get deleteMeal;
+
+  /// No description provided for @caloriesToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Calories'**
+  String get caloriesToday;
+
+  /// No description provided for @totalCalories.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Calories'**
+  String get totalCalories;
+
+  /// No description provided for @totalGL.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Glycemic Load'**
+  String get totalGL;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All Meals'**
+  String get filterAll;
+
+  /// No description provided for @filterBreakfast.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get filterBreakfast;
+
+  /// No description provided for @filterLunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get filterLunch;
+
+  /// No description provided for @filterDinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get filterDinner;
+
+  /// No description provided for @filterSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Snack'**
+  String get filterSnack;
+
+  /// No description provided for @emptyState.
+  ///
+  /// In en, this message translates to:
+  /// **'No meals match this filter'**
+  String get emptyState;
+
+  /// No description provided for @weeklyTrends.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Trends'**
+  String get weeklyTrends;
+
+  /// No description provided for @errorOccurred.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred'**
+  String get errorOccurred;
+
+  /// No description provided for @noDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get noDataAvailable;
+
+  /// No description provided for @jan.
+  ///
+  /// In en, this message translates to:
+  /// **'Jan'**
+  String get jan;
+
+  /// No description provided for @feb.
+  ///
+  /// In en, this message translates to:
+  /// **'Feb'**
+  String get feb;
+
+  /// No description provided for @mar.
+  ///
+  /// In en, this message translates to:
+  /// **'Mar'**
+  String get mar;
+
+  /// No description provided for @apr.
+  ///
+  /// In en, this message translates to:
+  /// **'Apr'**
+  String get apr;
+
+  /// No description provided for @may.
+  ///
+  /// In en, this message translates to:
+  /// **'May'**
+  String get may;
+
+  /// No description provided for @jun.
+  ///
+  /// In en, this message translates to:
+  /// **'Jun'**
+  String get jun;
+
+  /// No description provided for @jul.
+  ///
+  /// In en, this message translates to:
+  /// **'Jul'**
+  String get jul;
+
+  /// No description provided for @aug.
+  ///
+  /// In en, this message translates to:
+  /// **'Aug'**
+  String get aug;
+
+  /// No description provided for @sep.
+  ///
+  /// In en, this message translates to:
+  /// **'Sep'**
+  String get sep;
+
+  /// No description provided for @oct.
+  ///
+  /// In en, this message translates to:
+  /// **'Oct'**
+  String get oct;
+
+  /// No description provided for @nov.
+  ///
+  /// In en, this message translates to:
+  /// **'Nov'**
+  String get nov;
+
+  /// No description provided for @dec.
+  ///
+  /// In en, this message translates to:
+  /// **'Dec'**
+  String get dec;
 }
 
 class _AppLocalizationsDelegate

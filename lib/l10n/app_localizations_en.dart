@@ -28,4 +28,89 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registerButton => 'Register';
+
+  @override
+  String get mealHistory => 'Meal History';
+
+  @override
+  String get mealHistoryTitle => 'Your Nutritional Journey';
+
+  @override
+  String get noMealsLogged =>
+      'No meals logged yet. Start tracking your nutrition!';
+
+  @override
+  String get deleteMeal => 'Delete Meal';
+
+  @override
+  String get caloriesToday => 'Today\'s Calories';
+
+  @override
+  String get totalCalories => 'Total Calories';
+
+  @override
+  String get totalGL => 'Total Glycemic Load';
+
+  @override
+  String get filterAll => 'All Meals';
+
+  @override
+  String get filterBreakfast => 'Breakfast';
+
+  @override
+  String get filterLunch => 'Lunch';
+
+  @override
+  String get filterDinner => 'Dinner';
+
+  @override
+  String get filterSnack => 'Snack';
+
+  @override
+  String get emptyState => 'No meals match this filter';
+
+  @override
+  String get weeklyTrends => 'Weekly Trends';
+
+  @override
+  String get errorOccurred => 'An error occurred';
+
+  @override
+  String get noDataAvailable => 'No data available';
+
+  @override
+  String get jan => 'Jan';
+
+  @override
+  String get feb => 'Feb';
+
+  @override
+  String get mar => 'Mar';
+
+  @override
+  String get apr => 'Apr';
+
+  @override
+  String get may => 'May';
+
+  @override
+  String get jun => 'Jun';
+
+  @override
+  String get jul => 'Jul';
+
+  @override
+  String get aug => 'Aug';
+
+  @override
+  String get sep => 'Sep';
+
+  @override
+  String get oct => 'Oct';
+
+  @override
+  String get nov => 'Nov';
+
+  @override
+  String get dec => 'Dec';
 }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'features/auth/auth_state.dart';
 import 'features/auth/auth_screen.dart';
 import 'features/nutrition/screens/meal_logging_screen.dart';
+import 'features/nutrition/screens/meal_history_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'core/providers/language_provider.dart';
 
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               '/meal-logging': (context) => const MealLoggingScreen(),
+              '/meal-history': (context) => const MealHistoryScreen(),
             },
             debugShowCheckedModeBanner: false,
             // Phase 2 Localization Setup
