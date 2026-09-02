@@ -76,8 +76,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (_fatCtrl.text.isNotEmpty) {
       updates['daily_fat_target_g'] = double.tryParse(_fatCtrl.text);
     }
-    updates['glycemic_load_low_threshold'] = double.tryParse(_glLowCtrl.text) ?? 10.0;
-    updates['glycemic_load_medium_threshold'] = double.tryParse(_glMediumCtrl.text) ?? 19.0;
+    updates['glycemic_load_low_threshold'] =
+        double.tryParse(_glLowCtrl.text) ?? 10.0;
+    updates['glycemic_load_medium_threshold'] =
+        double.tryParse(_glMediumCtrl.text) ?? 19.0;
     if (_glLimitCtrl.text.isNotEmpty) {
       updates['daily_glycemic_load_limit'] = double.tryParse(_glLimitCtrl.text);
     }
@@ -88,8 +90,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       setState(() => _isSaving = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(_provider.error == null ? 'Settings saved!' : 'Save failed'),
-          backgroundColor: _provider.error == null ? const Color(0xFF2E7D32) : Colors.red,
+          content: Text(
+            _provider.error == null ? 'Settings saved!' : 'Save failed',
+          ),
+          backgroundColor: _provider.error == null
+              ? const Color(0xFF2E7D32)
+              : Colors.red,
         ),
       );
     }
@@ -110,11 +116,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           _sectionTitle(loc.goalFocusTitle),
           _dropdown(loc.goalFocusLabel, _goalFocus, [
-            DropdownMenuItem(value: 'maintenance', child: Text(loc.goalMaintenance)),
-            DropdownMenuItem(value: 'weight_loss', child: Text(loc.goalWeightLoss)),
-            DropdownMenuItem(value: 'muscle_gain', child: Text(loc.goalMuscleGain)),
-            DropdownMenuItem(value: 'fasting_support', child: Text(loc.goalFasting)),
-            DropdownMenuItem(value: 'diabetes_management', child: Text(loc.goalDiabetes)),
+            DropdownMenuItem(
+              value: 'maintenance',
+              child: Text(loc.goalMaintenance),
+            ),
+            DropdownMenuItem(
+              value: 'weight_loss',
+              child: Text(loc.goalWeightLoss),
+            ),
+            DropdownMenuItem(
+              value: 'muscle_gain',
+              child: Text(loc.goalMuscleGain),
+            ),
+            DropdownMenuItem(
+              value: 'fasting_support',
+              child: Text(loc.goalFasting),
+            ),
+            DropdownMenuItem(
+              value: 'diabetes_management',
+              child: Text(loc.goalDiabetes),
+            ),
           ], (v) => setState(() => _goalFocus = v!)),
           const SizedBox(height: 16),
           _sectionTitle(loc.dailyTargetsTitle),
@@ -140,9 +161,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: ElevatedButton.icon(
               onPressed: _isSaving ? null : _saveGoals,
               icon: _isSaving
-                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
                   : const Icon(Icons.save),
-              label: Text(_isSaving ? (isAm ? 'በማስቀመጥ ላይ...' : 'Saving...') : (isAm ? 'አስቀምጥ' : 'Save Changes')),
+              label: Text(
+                _isSaving
+                    ? (isAm ? 'በማስቀመጥ ላይ...' : 'Saving...')
+                    : (isAm ? 'አስቀምጥ' : 'Save Changes'),
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF2E7D32),
                 foregroundColor: Colors.white,
@@ -157,7 +186,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _sectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2E7D32))),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFF2E7D32),
+        ),
+      ),
     );
   }
 
@@ -167,19 +203,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: TextField(
         controller: ctrl,
         keyboardType: TextInputType.number,
-        decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+        ),
       ),
     );
   }
 
-  Widget _dropdown(String label, String value, List<DropdownMenuItem<String>> items, ValueChanged<String?> onChanged) {
+  Widget _dropdown(
+    String label,
+    String value,
+    List<DropdownMenuItem<String>> items,
+    ValueChanged<String?> onChanged,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: DropdownButtonFormField<String>(
         initialValue: value,
         items: items,
         onChanged: onChanged,
-        decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+        ),
       ),
     );
   }

@@ -9,52 +9,52 @@ class AppLocalizationsAm extends AppLocalizations {
   AppLocalizationsAm([String locale = 'am']) : super(locale);
 
   @override
-  String get appTitle => 'ስማርት አምጋገብ እና ጤና';
+  String get appTitle => 'ዥማርች አምጌወብ እና ጠና';
 
   @override
-  String get loginTitle => 'እንኳን ደህና መጡ';
+  String get loginTitle => 'እንኳናን ደማና መጦ';
 
   @override
-  String get registerTitle => 'አካውንት ይፍጠሩ';
+  String get registerTitle => 'አካውንች ይፍጠር';
 
   @override
-  String get emailLabel => 'ኢሜይል';
+  String get emailLabel => 'ኢመይል';
 
   @override
-  String get passwordLabel => 'የይለፍ ቃል';
+  String get passwordLabel => 'የይለፍ ጋል';
 
   @override
-  String get loginButton => 'ግባ';
+  String get loginButton => 'ግቡ';
 
   @override
-  String get registerButton => 'ተመዝገብ';
+  String get registerButton => 'ተመዝጌብ';
 
   @override
-  String get mealHistory => 'የምግብ ታሪክ';
+  String get mealHistory => 'የምጋብ ታሪክ';
 
   @override
-  String get mealHistoryTitle => 'የእርስዎ የተመጣጠነ ምግብ ጉዞ';
+  String get mealHistoryTitle => 'የእርዥዎን የተመጣጠነ ምጋብ ጉዞ';
 
   @override
-  String get noMealsLogged => 'ምግብ አልተመዘገበም - የእርስዎን ምግብ ለመከታተል ይጀምሩ!';
+  String get noMealsLogged => 'ምጋብ አልተመደባቡም';
 
   @override
-  String get deleteMeal => 'ምግብ ሰርዝ';
+  String get deleteMeal => 'ምጋብ ሰርዝ';
 
   @override
-  String get caloriesToday => 'ዛም ካሎሪ';
+  String get caloriesToday => 'ዛአም ካሎሪ';
 
   @override
   String get totalCalories => 'ጠቅላላ ካሎሪ';
 
   @override
-  String get totalGL => 'ጠቅላላ የግላይስሚክ ሸካራነት';
+  String get totalGL => 'ጠቅላላ የግላይሲሚክ ሸካራነት';
 
   @override
-  String get filterAll => 'ሁሉም ምግቦች';
+  String get filterAll => 'ሁልይም ምጋኮች';
 
   @override
-  String get filterBreakfast => 'ቁርስ';
+  String get filterBreakfast => 'ቁርሽ';
 
   @override
   String get filterLunch => 'ምሳ';
@@ -63,19 +63,19 @@ class AppLocalizationsAm extends AppLocalizations {
   String get filterDinner => 'እራት';
 
   @override
-  String get filterSnack => 'ትንሽ ምግብ';
+  String get filterSnack => 'ትንሻ ምጋብ';
 
   @override
-  String get emptyState => 'ምግብ አልተገኘም';
+  String get emptyState => 'ምጋብ አልተጌኝም';
 
   @override
   String get weeklyTrends => 'የሳምንት አዝማሚያ';
 
   @override
-  String get errorOccurred => 'ስህተት ተፈጥሯል';
+  String get errorOccurred => 'ሲህተት ተፈጠራል';
 
   @override
-  String get noDataAvailable => 'ውሂብ አልተገኘም';
+  String get noDataAvailable => 'ውሂብ አልተጌኝም';
 
   @override
   String get jan => 'ጃን';
@@ -87,7 +87,7 @@ class AppLocalizationsAm extends AppLocalizations {
   String get mar => 'ማር';
 
   @override
-  String get apr => 'ኤፕሪ';
+  String get apr => 'ኤፅሪ';
 
   @override
   String get may => 'ሜይ';
@@ -102,10 +102,10 @@ class AppLocalizationsAm extends AppLocalizations {
   String get aug => 'ኦግ';
 
   @override
-  String get sep => 'ሴፕ';
+  String get sep => 'ሴፅ';
 
   @override
-  String get oct => 'ኦክት';
+  String get oct => 'ኦእት';
 
   @override
   String get nov => 'ኖቭ';
@@ -113,55 +113,66 @@ class AppLocalizationsAm extends AppLocalizations {
   @override
   String get dec => 'ዲሴ';
 
-  // --- Settings & User Goals ---
   @override
-  String get settings => 'ማሰናጃዎች';
+  String get settings => 'ማሲተካካዥዎቡች';
+
   @override
-  String get settingsTitle => 'የግል ግቦች እና የሸካራነት ወሰን';
+  String get goalFocusTitle => 'የጠና ግብ ማነቋዊያ';
+
   @override
-  String get goalFocusTitle => 'የግብ ትኩረት';
+  String get goalFocusLabel => 'የእርዥዎንኝ ውና የጠና ግብ ይምርጦ';
+
   @override
-  String get goalFocusLabel => 'የጤና ዋና ግብ';
+  String get goalMaintenance => 'የአሁን ክብደትኝ ጠቡቅ';
+
   @override
-  String get goalMaintenance => 'ጥገና';
+  String get goalWeightLoss => 'ክብደት ይቁንሶ';
+
   @override
-  String get goalWeightLoss => 'ክብደት መቀነስ';
+  String get goalMuscleGain => 'ጡንት ለማሳደግ';
+
   @override
-  String get goalMuscleGain => 'ጡንቻ ማሳደግ';
+  String get goalFasting => 'የዞም ድጋዕ';
+
   @override
-  String get goalFasting => 'የጾም ድጋፍ';
+  String get goalDiabetes => 'የሲካር በሽት ማሲተዳደር';
+
   @override
-  String get goalDiabetes => 'የስኳር በሽታ አስተዳደር';
+  String get dailyTargetsTitle => 'የሻምንት የአመጋወብ ግቮች';
+
   @override
-  String get dailyTargetsTitle => 'የቀን ዒላማዎች';
+  String get dailyCalorieTarget => 'የቁን ካሎሪ ግብ (ኪካሎ)';
+
   @override
-  String get dailyCalorieTarget => 'የቀን ካሎሪ ግብ';
+  String get dailyProteinTarget => 'የቁን ፅሮቲን ግብ (ግ)';
+
   @override
-  String get dailyProteinTarget => 'የቀን ፕሮቲን ግብ (ግ)';
+  String get dailyCarbsTarget => 'የቁን ካርቮሻየድ ግብ (ግ)';
+
   @override
-  String get dailyCarbsTarget => 'የቀን ካርቦሃይድረት ግብ (ግ)';
+  String get dailyFatTarget => 'የቁን ሲብ ግብ (ግ)';
+
   @override
-  String get dailyFatTarget => 'የቀን ስብ ግብ (ግ)';
+  String get glThresholdsTitle => 'የግላይሲሚክ ሸካራነት ወሰንዎቡች';
+
   @override
-  String get glThresholdsTitle => 'የግላይስሚክ ሸካራነት ወሰን';
+  String get glLowThreshold => 'ዝቅተኚ የግል ሸካራነት ወሰን';
+
   @override
-  String get glLowThreshold => 'ዝቅተኛ ሸካራነት ወሰን';
+  String get glMediumThreshold => 'መካከሊኚ የግል ሸካራነት ወሰን';
+
   @override
-  String get glMediumThreshold => 'መካከለኛ ሸካራነት ወሰን';
+  String get dailyGlycemicLoadLimit => 'የቁን የግል ሸካራነት ጌብ';
+
   @override
-  String get dailyGlycemicLoadLimit => 'የቀን GL ገደብ (አማራጭ)';
+  String get languageTitle => 'የቁዋኚ ምርያ';
+
   @override
-  String get languageTitle => 'ቋንቋ';
+  String get languageLabel => 'የሚመርጦትኝ ቁዋኚ ይምርጦ';
+
   @override
-  String get languageLabel => 'ተመራጭ ቋንቋ';
+  String get languageEnglish => 'English (እንግላዝኚ)';
+
   @override
-  String get languageEnglish => 'እንግሊዝኛ';
-  @override
-  String get languageAmharic => 'አማርኛ';
-  @override
-  String get saveSettings => 'ለውጦችን አስቀምጥ';
-  @override
-  String get settingsSaved => 'ማሰናጃዎች በተሳካ ሁኔታ ተቀምጠዋል';
-  @override
-  String get saveFailed => 'ማስቀመጥ አልተሳካም';
+  String get languageAmharic => 'አመርኛ';
 }

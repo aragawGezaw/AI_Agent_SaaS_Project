@@ -1,4 +1,5 @@
 {
+  "@@locale": "en",
   "appTitle": "Smart Nutrition",
   "loginTitle": "Welcome Back",
   "registerTitle": "Create Account",
@@ -33,5 +34,26 @@
   "sep": "Sep",
   "oct": "Oct",
   "nov": "Nov",
-  "dec": "Dec"
+  "dec": "Dec",
+  "settings": "Settings",
+  "goalFocusTitle": "Health Goal Focus",
+  "goalFocusLabel": "Select your primary health goal",
+  "goalMaintenance": "Maintain Current Weight",
+  "goalWeightLoss": "Weight Loss",
+  "goalMuscleGain": "Muscle Gain",
+  "goalFasting": "Fasting Support",
+  "goalDiabetes": "Diabetes Management",
+  "dailyTargetsTitle": "Daily Nutritional Targets",
+  "dailyCalorieTarget": "Daily Calorie Target (kcal)",
+  "dailyProteinTarget": "Daily Protein Target (g)",
+  "dailyCarbsTarget": "Daily Carbohydrates Target (g)",
+  "dailyFatTarget": "Daily Fat Target (g)",
+  "glThresholdsTitle": "Glycemic Load Thresholds",
+  "glLowThreshold": "Low GL Threshold",
+  "glMediumThreshold": "Medium GL Threshold",
+  "dailyGlycemicLoadLimit": "Daily Glycemic Load Limit",
+  "languageTitle": "Language Preference",
+  "languageLabel": "Select your preferred language",
+  "languageEnglish": "English",
+  "languageAmharic": "አመርኛ (Amharic)"
 }

@@ -308,32 +308,131 @@ abstract class AppLocalizations {
   /// **'Dec'**
   String get dec;
 
-  // --- Settings & User Goals ---
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
   String get settings;
-  String get settingsTitle;
+
+  /// No description provided for @goalFocusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Goal Focus'**
   String get goalFocusTitle;
+
+  /// No description provided for @goalFocusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your primary health goal'**
   String get goalFocusLabel;
+
+  /// No description provided for @goalMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain Current Weight'**
   String get goalMaintenance;
+
+  /// No description provided for @goalWeightLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight Loss'**
   String get goalWeightLoss;
+
+  /// No description provided for @goalMuscleGain.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle Gain'**
   String get goalMuscleGain;
+
+  /// No description provided for @goalFasting.
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting Support'**
   String get goalFasting;
+
+  /// No description provided for @goalDiabetes.
+  ///
+  /// In en, this message translates to:
+  /// **'Diabetes Management'**
   String get goalDiabetes;
+
+  /// No description provided for @dailyTargetsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Nutritional Targets'**
   String get dailyTargetsTitle;
+
+  /// No description provided for @dailyCalorieTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Calorie Target (kcal)'**
   String get dailyCalorieTarget;
+
+  /// No description provided for @dailyProteinTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Protein Target (g)'**
   String get dailyProteinTarget;
+
+  /// No description provided for @dailyCarbsTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Carbohydrates Target (g)'**
   String get dailyCarbsTarget;
+
+  /// No description provided for @dailyFatTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Fat Target (g)'**
   String get dailyFatTarget;
+
+  /// No description provided for @glThresholdsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Glycemic Load Thresholds'**
   String get glThresholdsTitle;
+
+  /// No description provided for @glLowThreshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Low GL Threshold'**
   String get glLowThreshold;
+
+  /// No description provided for @glMediumThreshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium GL Threshold'**
   String get glMediumThreshold;
+
+  /// No description provided for @dailyGlycemicLoadLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Glycemic Load Limit'**
   String get dailyGlycemicLoadLimit;
+
+  /// No description provided for @languageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language Preference'**
   String get languageTitle;
+
+  /// No description provided for @languageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your preferred language'**
   String get languageLabel;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
   String get languageEnglish;
+
+  /// No description provided for @languageAmharic.
+  ///
+  /// In en, this message translates to:
+  /// **'አመርኛ (Amharic)'**
   String get languageAmharic;
-  String get saveSettings;
-  String get settingsSaved;
-  String get saveFailed;
 }
 
 class _AppLocalizationsDelegate
