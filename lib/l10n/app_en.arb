@@ -55,5 +55,81 @@
   "languageTitle": "Language Preference",
   "languageLabel": "Select your preferred language",
   "languageEnglish": "English",
-  "languageAmharic": "አመርኛ (Amharic)"
+  "languageAmharic": "አመርኛ (Amharic)",
+  "resourceHub": "Resource Hub",
+  "@resourceHub": {
+    "description": "Title of the educational resources hub screen"
+  },
+  "searchResources": "Search resources...",
+  "@searchResources": {
+    "description": "Search field placeholder for resources"
+  },
+  "noResources": "No resources found",
+  "@noResources": {
+    "description": "Empty state when no resources are available"
+  },
+  "noSearchResults": "No search results found",
+  "@noSearchResults": {
+    "description": "Empty state when search yields no results"
+  },
+  "featured": "Featured",
+  "@featured": {
+    "description": "Featured resource badge label"
+  },
+  "views": "views",
+  "@views": {
+    "description": "View count suffix"
+  },
+  "video": "Video",
+  "@video": {
+    "description": "Video indicator label"
+  },
+  "videoTutorial": "Video Tutorial",
+  "@videoTutorial": {
+    "description": "Video tutorial section title"
+  },
+  "watch": "Watch",
+  "@watch": {
+    "description": "Watch video button label"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back navigation button"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry action button"
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Refresh action"
+  },
+  "resourceNotFound": "Resource not found",
+  "@resourceNotFound": {
+    "description": "Error message when a resource is not found"
+  },
+  "eduCategoryNutrition": "Nutrition",
+  "@eduCategoryNutrition": {
+    "description": "Nutrition category label"
+  },
+  "eduCategoryGlycemicIndex": "Glycemic Index",
+  "@eduCategoryGlycemicIndex": {
+    "description": "Glycemic Index category label"
+  },
+  "eduCategoryFasting": "Fasting",
+  "@eduCategoryFasting": {
+    "description": "Fasting category label"
+  },
+  "eduCategoryRecipes": "Recipes",
+  "@eduCategoryRecipes": {
+    "description": "Recipes category label"
+  },
+  "eduCategoryHealthTips": "Health Tips",
+  "@eduCategoryHealthTips": {
+    "description": "Health Tips category label"
+  },
+  "eduCategoryExercise": "Exercise",
+  "@eduCategoryExercise": {
+    "description": "Exercise category label"
+  }
 }

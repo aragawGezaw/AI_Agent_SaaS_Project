@@ -433,6 +433,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'አመርኛ (Amharic)'**
   String get languageAmharic;
+
+  /// Title of the educational resources hub screen
+  ///
+  /// In en, this message translates to:
+  /// **'Resource Hub'**
+  String get resourceHub;
+
+  /// Search field placeholder for resources
+  ///
+  /// In en, this message translates to:
+  /// **'Search resources...'**
+  String get searchResources;
+
+  /// Empty state when no resources are available
+  ///
+  /// In en, this message translates to:
+  /// **'No resources found'**
+  String get noResources;
+
+  /// Empty state when search yields no results
+  ///
+  /// In en, this message translates to:
+  /// **'No search results found'**
+  String get noSearchResults;
+
+  /// Featured resource badge label
+  ///
+  /// In en, this message translates to:
+  /// **'Featured'**
+  String get featured;
+
+  /// View count suffix
+  ///
+  /// In en, this message translates to:
+  /// **'views'**
+  String get views;
+
+  /// Video indicator label
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get video;
+
+  /// Video tutorial section title
+  ///
+  /// In en, this message translates to:
+  /// **'Video Tutorial'**
+  String get videoTutorial;
+
+  /// Watch video button label
+  ///
+  /// In en, this message translates to:
+  /// **'Watch'**
+  String get watch;
+
+  /// Back navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// Retry action button
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// Refresh action
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
+
+  /// Error message when a resource is not found
+  ///
+  /// In en, this message translates to:
+  /// **'Resource not found'**
+  String get resourceNotFound;
+
+  /// Nutrition category label
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition'**
+  String get eduCategoryNutrition;
+
+  /// Glycemic Index category label
+  ///
+  /// In en, this message translates to:
+  /// **'Glycemic Index'**
+  String get eduCategoryGlycemicIndex;
+
+  /// Fasting category label
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting'**
+  String get eduCategoryFasting;
+
+  /// Recipes category label
+  ///
+  /// In en, this message translates to:
+  /// **'Recipes'**
+  String get eduCategoryRecipes;
+
+  /// Health Tips category label
+  ///
+  /// In en, this message translates to:
+  /// **'Health Tips'**
+  String get eduCategoryHealthTips;
+
+  /// Exercise category label
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise'**
+  String get eduCategoryExercise;
 }
 
 class _AppLocalizationsDelegate

@@ -176,4 +176,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageAmharic => 'አመርኛ (Amharic)';
+
+  @override
+  String get resourceHub => 'Resource Hub';
+
+  @override
+  String get searchResources => 'Search resources...';
+
+  @override
+  String get noResources => 'No resources found';
+
+  @override
+  String get noSearchResults => 'No search results found';
+
+  @override
+  String get featured => 'Featured';
+
+  @override
+  String get views => 'views';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get videoTutorial => 'Video Tutorial';
+
+  @override
+  String get watch => 'Watch';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get refresh => 'Refresh';
+
+  @override
+  String get resourceNotFound => 'Resource not found';
+
+  @override
+  String get eduCategoryNutrition => 'Nutrition';
+
+  @override
+  String get eduCategoryGlycemicIndex => 'Glycemic Index';
+
+  @override
+  String get eduCategoryFasting => 'Fasting';
+
+  @override
+  String get eduCategoryRecipes => 'Recipes';
+
+  @override
+  String get eduCategoryHealthTips => 'Health Tips';
+
+  @override
+  String get eduCategoryExercise => 'Exercise';
 }

@@ -175,4 +175,61 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get languageAmharic => 'አመርኛ';
+
+  @override
+  String get resourceHub => 'አጥካሰድ ውካዛዎ';
+
+  @override
+  String get searchResources => 'ውካዛዎ ፍላ...';
+
+  @override
+  String get noResources => 'ውካዛዎ አልተጌኝም';
+
+  @override
+  String get noSearchResults => 'ጠቅላላ ውካዛዎ አልተጌኝም';
+
+  @override
+  String get featured => 'እድውካድኛ';
+
+  @override
+  String get views => 'አደሻዶ';
+
+  @override
+  String get video => 'ቬዲኪ';
+
+  @override
+  String get videoTutorial => 'ቬዲኪ አዛጥስ';
+
+  @override
+  String get watch => 'ወአድ';
+
+  @override
+  String get back => 'ደማና';
+
+  @override
+  String get retry => 'አደማካድ';
+
+  @override
+  String get refresh => 'አደያዲሽ';
+
+  @override
+  String get resourceNotFound => 'ውካዛዎ አልተጌኝም';
+
+  @override
+  String get eduCategoryNutrition => 'አመጋወብ';
+
+  @override
+  String get eduCategoryGlycemicIndex => 'የግላይሲሚክ ኢንደክስ';
+
+  @override
+  String get eduCategoryFasting => 'የዞም';
+
+  @override
+  String get eduCategoryRecipes => 'የምጋብ እከጋ';
+
+  @override
+  String get eduCategoryHealthTips => 'የጠና ምዶያ';
+
+  @override
+  String get eduCategoryExercise => 'ማአለደት';
 }
