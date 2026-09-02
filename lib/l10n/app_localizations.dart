@@ -307,6 +307,33 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dec'**
   String get dec;
+
+  // --- Settings & User Goals ---
+  String get settings;
+  String get settingsTitle;
+  String get goalFocusTitle;
+  String get goalFocusLabel;
+  String get goalMaintenance;
+  String get goalWeightLoss;
+  String get goalMuscleGain;
+  String get goalFasting;
+  String get goalDiabetes;
+  String get dailyTargetsTitle;
+  String get dailyCalorieTarget;
+  String get dailyProteinTarget;
+  String get dailyCarbsTarget;
+  String get dailyFatTarget;
+  String get glThresholdsTitle;
+  String get glLowThreshold;
+  String get glMediumThreshold;
+  String get dailyGlycemicLoadLimit;
+  String get languageTitle;
+  String get languageLabel;
+  String get languageEnglish;
+  String get languageAmharic;
+  String get saveSettings;
+  String get settingsSaved;
+  String get saveFailed;
 }
 
 class _AppLocalizationsDelegate

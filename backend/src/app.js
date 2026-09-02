@@ -33,6 +33,7 @@ const chatRouter = require('./routes/chat.routes.js');
 const subscriptionRouter = require('./routes/subscription.routes.js');
 const foodRouter = require('./routes/food.routes.js');
 const mealHistoryRouter = require('./routes/meal_history.routes.js');
+const userGoalsRouter = require('./routes/user_goals.routes.js');
 
 // Mount routes
 app.use('/api/auth', authRouter);
@@ -42,6 +43,7 @@ app.use('/api/chat', chatRouter);
 app.use('/api/subscription', subscriptionRouter);
 app.use('/api/foods', foodRouter);
 app.use('/api/meal-history', mealHistoryRouter);
+app.use('/api/user/goals', userGoalsRouter);
 
 /**
  * @route GET /api/health

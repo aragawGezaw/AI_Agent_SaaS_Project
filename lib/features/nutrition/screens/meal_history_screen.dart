@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../core/providers/user_goals_provider.dart';
 import '../../../l10n/app_localizations.dart';
 import '../models/meal_history_item.dart';
 import '../models/weekly_trend_data.dart';
@@ -130,6 +132,7 @@ class _MealHistoryScreenState extends State<MealHistoryScreen> {
     final localizations = AppLocalizations.of(context)!;
     final langCode = Localizations.localeOf(context).languageCode;
     final isAm = langCode == 'am';
+    final userGoalsNotifier = context.watch<UserGoalsNotifier>();
 
     return Scaffold(
       appBar: AppBar(
@@ -151,6 +154,7 @@ class _MealHistoryScreenState extends State<MealHistoryScreen> {
             trendsData: _weeklyTrends,
             isLoading: _trendsLoading,
             error: _trendsError,
+            userGoals: userGoalsNotifier.goals,
           ),
           CalorieSummaryHeader(
             todayCalories: _todayCalories,

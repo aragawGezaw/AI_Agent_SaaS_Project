@@ -62,25 +62,30 @@ class NutritionService {
   }
 
   /**
-   * Classify Glycemic Load value.
-   * Low: 0-10, Medium: 11-19, High: 20+
+   * Classify Glycemic Load value using user-defined thresholds.
+   * Falls back to defaults (low=10, medium=20) when thresholds are null/undefined.
    * @param {number} gl
+   * @param {Object} thresholds - { lowThreshold: number, mediumThreshold: number }
    * @returns {string} 'low' | 'medium' | 'high'
    */
-  static classifyGlycemicLoad(gl) {
-    if (gl <= 10) return 'low';
-    if (gl <= 19) return 'medium';
+  static classifyGlycemicLoad(gl, thresholds = {}) {
+    const lowThreshold = thresholds.lowThreshold ?? 10;
+    const mediumThreshold = thresholds.mediumThreshold ?? 19;
+    if (gl <= lowThreshold) return 'low';
+    if (gl <= mediumThreshold) return 'medium';
     return 'high';
   }
 
   /**
    * Build an AI-structured evaluation note for a meal analysis.
+   * Uses user-defined GL thresholds when provided.
    * @param {Object} summary - Meal summary with totals and per-item breakdown
+   * @param {Object} thresholds - { lowThreshold: number, mediumThreshold: number }
    * @returns {Object} AI-structured evaluation note
    */
-  static buildEvaluationNote(summary) {
+  static buildEvaluationNote(summary, thresholds = {}) {
     const { totals, total_glycemic_load, items } = summary;
-    const glClass = this.classifyGlycemicLoad(total_glycemic_load);
+    const glClass = this.classifyGlycemicLoad(total_glycemic_load, thresholds);
 
     const sortedByGl = [...items].sort((a, b) => b.glycemic_load - a.glycemic_load);
     const topContributor = sortedByGl[0];
@@ -120,10 +125,12 @@ class NutritionService {
 
   /**
    * Analyze a meal given a list of food IDs and portion weights (grams).
+   * Optionally pass user-specific GL thresholds for classification.
    * @param {Array<{food_id: string, portion_g: number}>} mealItems
+   * @param {Object} thresholds - { lowThreshold: number, mediumThreshold: number }
    * @returns {Promise<Object>} Meal analysis result
    */
-  static async analyzeMeal(mealItems) {
+  static async analyzeMeal(mealItems, thresholds = {}) {
     const ids = mealItems.map((item) => item.food_id);
     const foodsResult = await query(
       'SELECT * FROM foods WHERE id = ANY($1::uuid[])',
@@ -192,7 +199,7 @@ class NutritionService {
       totals,
       total_glycemic_load,
       items,
-    });
+    }, thresholds);
 
     return {
       items,

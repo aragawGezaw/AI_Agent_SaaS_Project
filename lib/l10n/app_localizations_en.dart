@@ -113,4 +113,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dec => 'Dec';
+
+  // --- Settings & User Goals ---
+  @override
+  String get settings => 'Settings';
+  @override
+  String get settingsTitle => 'Personalized Goals & Thresholds';
+  @override
+  String get goalFocusTitle => 'Goal Focus';
+  @override
+  String get goalFocusLabel => 'Primary Health Goal';
+  @override
+  String get goalMaintenance => 'Maintenance';
+  @override
+  String get goalWeightLoss => 'Weight Loss';
+  @override
+  String get goalMuscleGain => 'Muscle Gain';
+  @override
+  String get goalFasting => 'Fasting Support';
+  @override
+  String get goalDiabetes => 'Diabetes Management';
+  @override
+  String get dailyTargetsTitle => 'Daily Targets';
+  @override
+  String get dailyCalorieTarget => 'Daily Calorie Target';
+  @override
+  String get dailyProteinTarget => 'Daily Protein Target (g)';
+  @override
+  String get dailyCarbsTarget => 'Daily Carbs Target (g)';
+  @override
+  String get dailyFatTarget => 'Daily Fat Target (g)';
+  @override
+  String get glThresholdsTitle => 'Glycemic Load Thresholds';
+  @override
+  String get glLowThreshold => 'GL Low Threshold';
+  @override
+  String get glMediumThreshold => 'GL Medium Threshold';
+  @override
+  String get dailyGlycemicLoadLimit => 'Daily GL Limit (optional)';
+  @override
+  String get languageTitle => 'Language';
+  @override
+  String get languageLabel => 'Preferred Language';
+  @override
+  String get languageEnglish => 'English';
+  @override
+  String get languageAmharic => 'Amharic';
+  @override
+  String get saveSettings => 'Save Changes';
+  @override
+  String get settingsSaved => 'Settings saved successfully';
+  @override
+  String get saveFailed => 'Failed to save settings';
 }

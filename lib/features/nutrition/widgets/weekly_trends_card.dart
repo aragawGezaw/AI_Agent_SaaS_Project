@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../../l10n/app_localizations.dart';
 import '../models/weekly_trend_data.dart';
+import '../models/user_goals_model.dart';
 
 /// A compact 7-day bar chart card showing calories and glycemic load trends.
+/// Uses user-specific GL thresholds from UserGoals when available.
 class WeeklyTrendsCard extends StatelessWidget {
   final WeeklyTrendResponse? trendsData;
   final bool isLoading;
   final String? error;
+  final UserGoals? userGoals;
 
   const WeeklyTrendsCard({
     super.key,
     required this.trendsData,
     required this.isLoading,
     this.error,
+    this.userGoals,
   });
 
   String _getMonthAbbreviation(int month, AppLocalizations localizations) {
@@ -181,8 +185,10 @@ class WeeklyTrendsCard extends StatelessWidget {
     return trends.asMap().entries.map((entry) {
       final idx = entry.key;
       final trend = entry.value;
-      // Uses the shared model helper functions from weekly_trend_data.dart
-      final glColor = glThresholdColor(classifyGL(trend.totalGlycemicLoad));
+      // Use user-specific GL thresholds if available, otherwise defaults
+      final glColor = glThresholdColor(
+        classifyGLWithThresholds(trend.totalGlycemicLoad, userGoals),
+      );
       return BarChartGroupData(
         x: idx,
         barRods: [

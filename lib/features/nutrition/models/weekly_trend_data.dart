@@ -69,3 +69,16 @@ Color glThresholdColor(TrendThreshold threshold) {
       return const Color(0xFFC62828); // Red
   }
 }
+
+/// Classify GL using user-specific thresholds from UserGoals
+/// Falls back to defaults (low <= 10, medium <= 19) if goals is null.
+TrendThreshold classifyGLWithThresholds(double gl, dynamic userGoals) {
+  if (userGoals != null) {
+    final lowThreshold = userGoals.glycemicLoadLowThreshold ?? 10.0;
+    final mediumThreshold = userGoals.glycemicLoadMediumThreshold ?? 19.0;
+    if (gl <= lowThreshold) return TrendThreshold.low;
+    if (gl <= mediumThreshold) return TrendThreshold.medium;
+    return TrendThreshold.high;
+  }
+  return classifyGL(gl);
+}

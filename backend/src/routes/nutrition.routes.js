@@ -42,8 +42,25 @@ router.post('/analyze-meal', authenticateToken, async (req, res, next) => {
       }
     }
 
-    // Analyze the meal using NutritionService
-    const analysis = await NutritionService.analyzeMeal(items);
+    // Analyze the meal using NutritionService (optionally with user-specific GL thresholds)
+    let thresholds = {};
+    try {
+      const goalsResult = await query(
+        'SELECT glycemic_load_low_threshold, glycemic_load_medium_threshold FROM user_goals WHERE user_id = $1',
+        [userId]
+      );
+      if (goalsResult.rows.length > 0) {
+        const row = goalsResult.rows[0];
+        thresholds = {
+          lowThreshold: parseFloat(row.glycemic_load_low_threshold) || 10,
+          mediumThreshold: parseFloat(row.glycemic_load_medium_threshold) || 20,
+        };
+      }
+    } catch (_) {
+      // Non-critical: use defaults if goals table not available
+    }
+
+    const analysis = await NutritionService.analyzeMeal(items, thresholds);
 
     return res.status(200).json(analysis);
   } catch (error) {

@@ -112,4 +112,56 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get dec => 'ዲሴ';
+
+  // --- Settings & User Goals ---
+  @override
+  String get settings => 'ማሰናጃዎች';
+  @override
+  String get settingsTitle => 'የግል ግቦች እና የሸካራነት ወሰን';
+  @override
+  String get goalFocusTitle => 'የግብ ትኩረት';
+  @override
+  String get goalFocusLabel => 'የጤና ዋና ግብ';
+  @override
+  String get goalMaintenance => 'ጥገና';
+  @override
+  String get goalWeightLoss => 'ክብደት መቀነስ';
+  @override
+  String get goalMuscleGain => 'ጡንቻ ማሳደግ';
+  @override
+  String get goalFasting => 'የጾም ድጋፍ';
+  @override
+  String get goalDiabetes => 'የስኳር በሽታ አስተዳደር';
+  @override
+  String get dailyTargetsTitle => 'የቀን ዒላማዎች';
+  @override
+  String get dailyCalorieTarget => 'የቀን ካሎሪ ግብ';
+  @override
+  String get dailyProteinTarget => 'የቀን ፕሮቲን ግብ (ግ)';
+  @override
+  String get dailyCarbsTarget => 'የቀን ካርቦሃይድረት ግብ (ግ)';
+  @override
+  String get dailyFatTarget => 'የቀን ስብ ግብ (ግ)';
+  @override
+  String get glThresholdsTitle => 'የግላይስሚክ ሸካራነት ወሰን';
+  @override
+  String get glLowThreshold => 'ዝቅተኛ ሸካራነት ወሰን';
+  @override
+  String get glMediumThreshold => 'መካከለኛ ሸካራነት ወሰን';
+  @override
+  String get dailyGlycemicLoadLimit => 'የቀን GL ገደብ (አማራጭ)';
+  @override
+  String get languageTitle => 'ቋንቋ';
+  @override
+  String get languageLabel => 'ተመራጭ ቋንቋ';
+  @override
+  String get languageEnglish => 'እንግሊዝኛ';
+  @override
+  String get languageAmharic => 'አማርኛ';
+  @override
+  String get saveSettings => 'ለውጦችን አስቀምጥ';
+  @override
+  String get settingsSaved => 'ማሰናጃዎች በተሳካ ሁኔታ ተቀምጠዋል';
+  @override
+  String get saveFailed => 'ማስቀመጥ አልተሳካም';
 }

@@ -4,8 +4,10 @@ import 'features/auth/auth_state.dart';
 import 'features/auth/auth_screen.dart';
 import 'features/nutrition/screens/meal_logging_screen.dart';
 import 'features/nutrition/screens/meal_history_screen.dart';
+import 'features/nutrition/screens/settings_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'core/providers/language_provider.dart';
+import 'core/providers/user_goals_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthState()),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
+        ChangeNotifierProvider(create: (_) => UserGoalsNotifier()),
       ],
       child: Consumer<LanguageProvider>(
         builder: (context, languageProvider, _) {
@@ -30,7 +33,21 @@ class MyApp extends StatelessWidget {
             home: const AuthScreen(),
             routes: {
               '/home': (context) => Scaffold(
-                appBar: AppBar(title: const Text('Smart Nutrition & Health')),
+                appBar: AppBar(
+                  title: const Text('Smart Nutrition & Health'),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.settings_rounded),
+                      tooltip: 'Settings',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                        );
+                      },
+                    ),
+                  ],
+                ),
                 body: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -54,6 +71,7 @@ class MyApp extends StatelessWidget {
               ),
               '/meal-logging': (context) => const MealLoggingScreen(),
               '/meal-history': (context) => const MealHistoryScreen(),
+              '/settings': (context) => const SettingsScreen(),
             },
             debugShowCheckedModeBanner: false,
             // Phase 2 Localization Setup
