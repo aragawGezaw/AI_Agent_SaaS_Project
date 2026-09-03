@@ -1,0 +1,75 @@
+Analyzing meal_plan...                                          
+
+   info - The private field _isFastingDay could be 'final'. Try making the field 'final' - lib\features\meal_plan\screens\meal_plan_screen.dart:20:8 - prefer_final_fields
+warning - The declaration '_pickDate' isn't referenced. Try removing the declaration of '_pickDate' - lib\features\meal_plan\screens\meal_plan_screen.dart:37:16 - unused_element
+warning - The declaration '_generatePlan' isn't referenced. Try removing the declaration of '_generatePlan' - lib\features\meal_plan\screens\meal_plan_screen.dart:49:16 - unused_element
+warning - The declaration '_isSameDay' isn't referenced. Try removing the declaration of '_isSameDay' - lib\features\meal_plan\screens\meal_plan_screen.dart:79:8 - unused_element
+  error - Expected a class member. Try placing this code inside a class member - lib\features\meal_plan\screens\meal_plan_screen.dart:112:5 - expected_class_member
+  error - Expected a class member. Try placing this code inside a class member - lib\features\meal_plan\screens\meal_plan_screen.dart:112:6 - expected_class_member
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:132:25 - creation_with_non_type
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:134:25 - creation_with_non_type
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:167:21 - creation_with_non_type
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:173:19 - creation_with_non_type
+  error - Undefined name '_pickDate'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:176:28 - undefined_identifier
+  error - Undefined name '_selectedDate'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:178:29 - undefined_identifier
+  error - The function '_formatDate' isn't defined. Try importing the library that defines '_formatDate', correcting the name to the name of an existing function, or defining a function named '_formatDate' - lib\features\meal_plan\screens\meal_plan_screen.dart:178:53 - undefined_function
+  error - Undefined name '_selectedDate'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:178:65 - undefined_identifier
+  error - Undefined name '_selectedDate'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:184:19 - undefined_identifier
+  error - The function 'setState' isn't defined. Try importing the library that defines 'setState', correcting the name to the name of an existing function, or defining a function named 'setState' - lib\features\meal_plan\screens\meal_plan_screen.dart:186:34 - undefined_function
+  error - Undefined name '_selectedDate'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:186:49 - undefined_identifier
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:190:19 - creation_with_non_type
+  error - Undefined name '_isFastingDay'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:193:24 - undefined_identifier
+  error - Undefined name '_isFastingDay'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:195:43 - undefined_identifier
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:200:25 - creation_with_non_type
+  error - Undefined name '_isFastingDay'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:207:24 - undefined_identifier
+  error - The function 'setState' isn't defined. Try importing the library that defines 'setState', correcting the name to the name of an existing function, or defining a function named 'setState' - lib\features\meal_plan\screens\meal_plan_screen.dart:209:35 - undefined_function
+  error - Undefined name '_isFastingDay'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:209:50 - undefined_identifier
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:213:19 - creation_with_non_type
+  error - Undefined name '_generatePlan'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:215:57 - undefined_identifier
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:217:27 - creation_with_non_type
+  error - Undefined class 'MealPlanResponse'. Try changing the name to the name of an existing class, or creating a class with the name 'MealPlanResponse' - lib\features\meal_plan\screens\meal_plan_screen.dart:236:57 - undefined_class
+  error - Undefined name 'context'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:237:41 - undefined_identifier
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:248:17 - creation_with_non_type
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:251:19 - creation_with_non_type
+  error - Expected to find ')' - lib\features\meal_plan\screens\meal_plan_screen.dart:263:7 - expected_token
+   info - Statements in an if should be enclosed in a block. Try wrapping the statement in a block - lib\features\meal_plan\screens\meal_plan_screen.dart:274:38 - curly_braces_in_flow_control_structures
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:277:19 - creation_with_non_type
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:279:19 - creation_with_non_type
+  error - The function '_isSameDay' isn't defined. Try importing the library that defines '_isSameDay', correcting the name to the name of an existing function, or defining a function named '_isSameDay' - lib\features\meal_plan\screens\meal_plan_screen.dart:305:21 - undefined_function
+  error - The function '_isSameDay' isn't defined. Try importing the library that defines '_isSameDay', correcting the name to the name of an existing function, or defining a function named '_isSameDay' - lib\features\meal_plan\screens\meal_plan_screen.dart:306:25 - undefined_function
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:316:15 - creation_with_non_type
+  error - The name 'SizedBox' isn't a class. Try correcting the name to match an existing class - lib\features\meal_plan\screens\meal_plan_screen.dart:320:13 - creation_with_non_type
+  error - Expected a method, getter, setter or operator declaration. This appears to be incomplete code. Try removing it or completing it - lib\features\meal_plan\screens\meal_plan_screen.dart:323:1 - expected_executable
+  error - Can't have modifier 'const' here. Try removing 'const' - lib\features\meal_plan\screens\meal_plan_screen.dart:324:9 - extraneous_modifier
+   info - Missing type annotation. Try adding a type annotation - lib\features\meal_plan\screens\meal_plan_screen.dart:324:15 - strict_top_level_inference
+   info - The variable name 'SizedBox' isn't a lowerCamelCase identifier. Try changing the name to follow the lowerCamelCase style - lib\features\meal_plan\screens\meal_plan_screen.dart:324:15 - non_constant_identifier_names
+   info - Missing type annotation. Try adding a type annotation - lib\features\meal_plan\screens\meal_plan_screen.dart:324:24 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}'). Try surrounding the named parameters in curly braces - lib\features\meal_plan\screens\meal_plan_screen.dart:324:30 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported. Try replacing the colon with an equal sign - lib\features\meal_plan\screens\meal_plan_screen.dart:324:30 - obsolete_colon_for_default_value
+  error - A function body must be provided. Try adding a function body - lib\features\meal_plan\screens\meal_plan_screen.dart:324:34 - missing_function_body
+  error - Expected a method, getter, setter or operator declaration. This appears to be incomplete code. Try removing it or completing it - lib\features\meal_plan\screens\meal_plan_screen.dart:324:34 - expected_executable
+   info - Missing type annotation. Try adding a type annotation - lib\features\meal_plan\screens\meal_plan_screen.dart:325:9 - strict_top_level_inference
+   info - The variable name 'Row' isn't a lowerCamelCase identifier. Try changing the name to follow the lowerCamelCase style - lib\features\meal_plan\screens\meal_plan_screen.dart:325:9 - non_constant_identifier_names
+   info - Missing type annotation. Try adding a type annotation - lib\features\meal_plan\screens\meal_plan_screen.dart:325:13 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}'). Try surrounding the named parameters in curly braces - lib\features\meal_plan\screens\meal_plan_screen.dart:325:30 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported. Try replacing the colon with an equal sign - lib\features\meal_plan\screens\meal_plan_screen.dart:325:30 - obsolete_colon_for_default_value
+   info - Missing type annotation. Try adding a type annotation - lib\features\meal_plan\screens\meal_plan_screen.dart:325:63 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}'). Try surrounding the named parameters in curly braces - lib\features\meal_plan\screens\meal_plan_screen.dart:325:71 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported. Try replacing the colon with an equal sign - lib\features\meal_plan\screens\meal_plan_screen.dart:325:71 - obsolete_colon_for_default_value
+  error - The default value of an optional parameter must be constant - lib\features\meal_plan\screens\meal_plan_screen.dart:325:73 - non_constant_default_value
+  error - Undefined name 'isAm'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:326:24 - undefined_identifier
+  error - Undefined name 'plan'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:326:54 - undefined_identifier
+  error - Undefined name 'isAm'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:327:24 - undefined_identifier
+  error - Undefined name 'plan'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:327:63 - undefined_identifier
+  error - Undefined name 'isAm'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:328:24 - undefined_identifier
+  error - Undefined name 'plan'. Try correcting the name to one that is defined, or defining the name - lib\features\meal_plan\screens\meal_plan_screen.dart:328:52 - undefined_identifier
+  error - A function body must be provided. Try adding a function body - lib\features\meal_plan\screens\meal_plan_screen.dart:329:11 - missing_function_body
+  error - Expected a method, getter, setter or operator declaration. This appears to be incomplete code. Try removing it or completing it - lib\features\meal_plan\screens\meal_plan_screen.dart:329:11 - expected_executable
+  error - Expected a method, getter, setter or operator declaration. This appears to be incomplete code. Try removing it or completing it - lib\features\meal_plan\screens\meal_plan_screen.dart:330:7 - expected_executable
+  error - Expected a method, getter, setter or operator declaration. This appears to be incomplete code. Try removing it or completing it - lib\features\meal_plan\screens\meal_plan_screen.dart:330:8 - expected_executable
+  error - Expected a method, getter, setter or operator declaration. This appears to be incomplete code. Try removing it or completing it - lib\features\meal_plan\screens\meal_plan_screen.dart:330:9 - expected_executable
+  error - Expected a method, getter, setter or operator declaration. This appears to be incomplete code. Try removing it or completing it - lib\features\meal_plan\screens\meal_plan_screen.dart:331:5 - expected_executable
+  error - Unexpected text ';'. Try removing the text - lib\features\meal_plan\screens\meal_plan_screen.dart:331:6 - unexpected_token
+  error - Expected a method, getter, setter or operator declaration. This appears to be incomplete code. Try removing it or completing it - lib\features\meal_plan\screens\meal_plan_screen.dart:332:3 - expected_executable
+
+71 issues found. (ran in 50.9s)
