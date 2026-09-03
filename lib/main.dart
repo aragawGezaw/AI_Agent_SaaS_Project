@@ -7,6 +7,8 @@ import 'features/nutrition/screens/meal_history_screen.dart';
 import 'features/nutrition/screens/settings_screen.dart';
 import 'features/education/providers/education_provider.dart';
 import 'features/education/screens/resources_screen.dart';
+import 'features/meal_plan/providers/meal_plan_provider.dart';
+import 'features/meal_plan/screens/meal_plan_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'core/providers/language_provider.dart';
 import 'core/providers/user_goals_provider.dart';
@@ -27,6 +29,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserGoalsNotifier()),
         ChangeNotifierProvider(
           create: (_) => EducationProvider(),
+        ), // Added provider
+        ChangeNotifierProvider(
+          create: (_) => MealPlanProvider(),
         ), // Added provider
       ],
       child: Consumer<LanguageProvider>(
@@ -96,14 +101,28 @@ class MyApp extends StatelessWidget {
                           '/resources',
                         ), // Added navigation button
                       ),
+                      const SizedBox(height: 12),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF6A1B9A),
+                          foregroundColor: Colors.white,
+                        ),
+                        icon: const Icon(Icons.auto_awesome_rounded),
+                        label: const Text('AI Meal Planner'),
+                        onPressed: () => Navigator.pushNamed(
+                          context,
+                          '/meal-plan',
+                        ), // Added AI meal plan navigation
+                      ),
                     ],
                   ),
                 ),
               ),
+              '/meal-plan': (context) => const MealPlanScreen(),
               '/meal-logging': (context) => const MealLoggingScreen(),
               '/meal-history': (context) => const MealHistoryScreen(),
               '/settings': (context) => const SettingsScreen(),
-              '/resources': (context) => const ResourcesScreen(), // Added route
+              '/resources': (context) => const ResourcesScreen(),
             },
             debugShowCheckedModeBanner: false,
             localizationsDelegates: AppLocalizations.localizationsDelegates,

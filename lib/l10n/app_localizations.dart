@@ -547,6 +547,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Exercise'**
   String get eduCategoryExercise;
+
+  /// Title of the AI meal planner screen
+  ///
+  /// In en, this message translates to:
+  /// **'AI Meal Planner'**
+  String get aiMealPlanner;
+
+  /// First tab label for the latest generated plan
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Plan'**
+  String get todaysPlan;
+
+  /// Second tab label for saved plan history
+  ///
+  /// In en, this message translates to:
+  /// **'Plan History'**
+  String get planHistory;
+
+  /// Heading on the generate-plan card
+  ///
+  /// In en, this message translates to:
+  /// **'Generate New Plan'**
+  String get generateNewPlan;
+
+  /// Subheading on the generate-plan card
+  ///
+  /// In en, this message translates to:
+  /// **'AI will create a personalized 4-meal plan for you'**
+  String get aiWillCreatePersonalizedPlan;
+
+  /// Button label to open the date picker
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get selectDate;
+
+  /// Clear button label
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// Toggle label for Ethiopian Orthodox fasting
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting Day'**
+  String get fastingDay;
+
+  /// Primary CTA button label to generate an AI meal plan
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Plan'**
+  String get generatePlan;
+
+  /// Loading state label while AI generates the plan
+  ///
+  /// In en, this message translates to:
+  /// **'Generating...'**
+  String get generating;
+
+  /// Snackbar success message after plan generation
+  ///
+  /// In en, this message translates to:
+  /// **'Meal plan generated successfully!'**
+  String get mealPlanGeneratedSuccess;
+
+  /// Empty state message in the history tab
+  ///
+  /// In en, this message translates to:
+  /// **'No saved meal plans found'**
+  String get noMealPlansFound;
+
+  /// Helper text under empty state
+  ///
+  /// In en, this message translates to:
+  /// **'Generate a plan from the Generate tab above'**
+  String get generateFirstPlan;
 }
 
 class _AppLocalizationsDelegate

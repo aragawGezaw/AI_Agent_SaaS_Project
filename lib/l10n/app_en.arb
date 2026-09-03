@@ -131,5 +131,57 @@
   "eduCategoryExercise": "Exercise",
   "@eduCategoryExercise": {
     "description": "Exercise category label"
+  },
+  "aiMealPlanner": "AI Meal Planner",
+  "@aiMealPlanner": {
+    "description": "Title of the AI meal planner screen"
+  },
+  "todaysPlan": "Today's Plan",
+  "@todaysPlan": {
+    "description": "First tab label for the latest generated plan"
+  },
+  "planHistory": "Plan History",
+  "@planHistory": {
+    "description": "Second tab label for saved plan history"
+  },
+  "generateNewPlan": "Generate New Plan",
+  "@generateNewPlan": {
+    "description": "Heading on the generate-plan card"
+  },
+  "aiWillCreatePersonalizedPlan": "AI will create a personalized 4-meal plan for you",
+  "@aiWillCreatePersonalizedPlan": {
+    "description": "Subheading on the generate-plan card"
+  },
+  "selectDate": "Select date",
+  "@selectDate": {
+    "description": "Button label to open the date picker"
+  },
+  "clear": "Clear",
+  "@clear": {
+    "description": "Clear button label"
+  },
+  "fastingDay": "Fasting Day",
+  "@fastingDay": {
+    "description": "Toggle label for Ethiopian Orthodox fasting"
+  },
+  "generatePlan": "Generate Plan",
+  "@generatePlan": {
+    "description": "Primary CTA button label to generate an AI meal plan"
+  },
+  "generating": "Generating...",
+  "@generating": {
+    "description": "Loading state label while AI generates the plan"
+  },
+  "mealPlanGeneratedSuccess": "Meal plan generated successfully!",
+  "@mealPlanGeneratedSuccess": {
+    "description": "Snackbar success message after plan generation"
+  },
+  "noMealPlansFound": "No saved meal plans found",
+  "@noMealPlansFound": {
+    "description": "Empty state message in the history tab"
+  },
+  "generateFirstPlan": "Generate a plan from the Generate tab above",
+  "@generateFirstPlan": {
+    "description": "Helper text under empty state"
   }
 }

@@ -76,5 +76,18 @@
   "eduCategoryFasting": "የዞም",
   "eduCategoryRecipes": "የምጋብ እከጋ",
   "eduCategoryHealthTips": "የጠና ምዶያ",
-  "eduCategoryExercise": "ማአለደት"
+  "eduCategoryExercise": "ማአለደት",
+  "aiMealPlanner": "AI የምጋብ እቅድ ማዘጋጃ",
+  "todaysPlan": "የዛምሻው እቅድ",
+  "planHistory": "የእቅዶች ታሪክ",
+  "generateNewPlan": "አዲስ እቅድ ማምረት",
+  "aiWillCreatePersonalizedPlan": "AI ለእርስዎ የተበጁ 4 ምግቦችን ይፈጥራል",
+  "selectDate": "ቀን ይምረጡ",
+  "clear": "አጽዳ",
+  "fastingDay": "የጾም ቀን",
+  "generatePlan": "እቅድ ማምረት",
+  "generating": "በማራከር...",
+  "mealPlanGeneratedSuccess": "የምግብ እቅድ በተሳካ ሁኔታ ተፈጥሯል!",
+  "noMealPlansFound": "ምንም የተማረኩ እቅዶች የሉም",
+  "generateFirstPlan": "ከላይ ካለው አዲስ እቅድ ማምረት ይጀምሩ"
 }

@@ -233,4 +233,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eduCategoryExercise => 'Exercise';
+
+  @override
+  String get aiMealPlanner => 'AI Meal Planner';
+
+  @override
+  String get todaysPlan => 'Today\'s Plan';
+
+  @override
+  String get planHistory => 'Plan History';
+
+  @override
+  String get generateNewPlan => 'Generate New Plan';
+
+  @override
+  String get aiWillCreatePersonalizedPlan =>
+      'AI will create a personalized 4-meal plan for you';
+
+  @override
+  String get selectDate => 'Select date';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get fastingDay => 'Fasting Day';
+
+  @override
+  String get generatePlan => 'Generate Plan';
+
+  @override
+  String get generating => 'Generating...';
+
+  @override
+  String get mealPlanGeneratedSuccess => 'Meal plan generated successfully!';
+
+  @override
+  String get noMealPlansFound => 'No saved meal plans found';
+
+  @override
+  String get generateFirstPlan => 'Generate a plan from the Generate tab above';
 }

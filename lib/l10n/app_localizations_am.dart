@@ -232,4 +232,43 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get eduCategoryExercise => 'ማአለደት';
+
+  @override
+  String get aiMealPlanner => 'AI የምጋብ እቅድ ማዘጋጃ';
+
+  @override
+  String get todaysPlan => 'የዛምሻው እቅድ';
+
+  @override
+  String get planHistory => 'የእቅዶች ታሪክ';
+
+  @override
+  String get generateNewPlan => 'አዲስ እቅድ ማምረት';
+
+  @override
+  String get aiWillCreatePersonalizedPlan => 'AI ለእርስዎ የተበጁ 4 ምግቦችን ይፈጥራል';
+
+  @override
+  String get selectDate => 'ቀን ይምረጡ';
+
+  @override
+  String get clear => 'አጽዳ';
+
+  @override
+  String get fastingDay => 'የጾም ቀን';
+
+  @override
+  String get generatePlan => 'እቅድ ማምረት';
+
+  @override
+  String get generating => 'በማራከር...';
+
+  @override
+  String get mealPlanGeneratedSuccess => 'የምግብ እቅድ በተሳካ ሁኔታ ተፈጥሯል!';
+
+  @override
+  String get noMealPlansFound => 'ምንም የተማረኩ እቅዶች የሉም';
+
+  @override
+  String get generateFirstPlan => 'ከላይ ካለው አዲስ እቅድ ማምረት ይጀምሩ';
 }
