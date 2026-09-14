@@ -271,4 +271,84 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get generateFirstPlan => 'ከላይ ካለው አዲስ እቅድ ማምረት ይጀምሩ';
+
+  @override
+  String get healthDashboard => 'የጠና ዳሽቦርድ';
+
+  @override
+  String get weeklyOverview => 'የ7-ቀን እይታ';
+
+  @override
+  String get todaysProgress => 'የዛምሻው ግብረመልስ';
+
+  @override
+  String get calories => 'ካሎሪ';
+
+  @override
+  String get glycemicLoad => 'የግላይሲሚክ ሸካራነት';
+
+  @override
+  String get protein => 'ፅሮቲን';
+
+  @override
+  String get carbs => 'ካርቦሻይድ';
+
+  @override
+  String get fat => 'ሲብ';
+
+  @override
+  String get mealsLogged => 'የተመዘገቡ ምግቦች';
+
+  @override
+  String get avgDaily => 'አማካኝ / ቀን';
+
+  @override
+  String get total => 'ጠቅላላ';
+
+  @override
+  String get target => 'ግብ';
+
+  @override
+  String ofTarget(int value) {
+    return '$value% የግብ';
+  }
+
+  @override
+  String get glycemicLoadLow => 'ዝቅተኚ ግል';
+
+  @override
+  String get glycemicLoadModerate => 'መካከሊኚ ግል';
+
+  @override
+  String get glycemicLoadExceeded => 'ግል ተሻግሯል';
+
+  @override
+  String get kcal => 'ኪካሎ';
+
+  @override
+  String get g => 'ግ';
+
+  @override
+  String get noAnalyticsData => 'የታኒቲክስ ውሂብ የሉም';
+
+  @override
+  String get startTrackingMeals => 'የእርስዎን የታኒቲክስ ለማየት ምግቦችን ማስጀመር ጀምሩ';
+
+  @override
+  String get viewTodaysMealPlan => 'የዛምሻውን የምጋብ እቅድ ይመልከቱ';
+
+  @override
+  String get viewFoodLog => 'የምጋብ ታሪክ ይመልከቱ';
+
+  @override
+  String get metabolicHealth => 'የሜታቦሊክ ጠና';
+
+  @override
+  String get nutrientBreakdown => 'የአመጋወብ ዝርዝር';
+
+  @override
+  String get macrosDistribution => 'የማክሮ ስርጭት';
+
+  @override
+  String get today => 'ዛምሻ';
 }

@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../../core/api/subscription_error_interceptor.dart';
 import '../models/meal_plan.dart';
 import '../services/meal_plan_api_service.dart';
 
 /// State management for the AI Meal Planning module.
-///
-/// Owns:
-/// - `currentPlan`: the most recent AI-generated meal plan
-/// - `savedPlans`: a list of all meal plans the user has previously generated
-/// - `isGenerating` / `isLoadingSaved` loading flags for the two operations
-/// - `error` for surfacing user-facing error messages
 class MealPlanProvider extends ChangeNotifier {
   final MealPlanApiService _service;
 
@@ -23,6 +18,7 @@ class MealPlanProvider extends ChangeNotifier {
   String? _error;
   String? _lastGeneratedDate;
   bool _lastFastingPreference = false;
+  SubscriptionRequiredException? _subscriptionError;
 
   // --- Getters ---
   MealPlanResponse? get currentPlan => _currentPlan;
@@ -34,9 +30,8 @@ class MealPlanProvider extends ChangeNotifier {
   bool get lastFastingPreference => _lastFastingPreference;
   bool get hasCurrentPlan => _currentPlan != null;
   bool get hasSavedPlans => _savedPlans.isNotEmpty;
+  SubscriptionRequiredException? get subscriptionError => _subscriptionError;
 
-  /// Returns the most recent (latest plan_date) set of saved meals, grouped
-  /// by date. Used by the history view.
   Map<String, List<MealPlan>> get savedPlansByDate {
     final map = <String, List<MealPlan>>{};
     for (final m in _savedPlans) {
@@ -46,7 +41,6 @@ class MealPlanProvider extends ChangeNotifier {
           '${m.planDate.day.toString().padLeft(2, '0')}';
       map.putIfAbsent(key, () => []).add(m);
     }
-    // Sort each list by meal_type ordering
     const order = ['breakfast', 'lunch', 'dinner', 'snack'];
     for (final list in map.values) {
       list.sort((a, b) {
@@ -60,17 +54,13 @@ class MealPlanProvider extends ChangeNotifier {
 
   // --- Actions ---
 
-  /// Request a new AI-generated meal plan from the backend.
-  ///
-  /// [planDate] (optional) is a `YYYY-MM-DD` string. When null, the server
-  /// defaults to today.
-  /// [isFastingDay] controls the Ethiopian Orthodox fasting-aware prompt.
   Future<MealPlanResponse?> generateMealPlan({
     String? planDate,
     bool isFastingDay = false,
   }) async {
     _isGenerating = true;
     _error = null;
+    _subscriptionError = null;
     _lastGeneratedDate = planDate;
     _lastFastingPreference = isFastingDay;
     notifyListeners();
@@ -81,11 +71,12 @@ class MealPlanProvider extends ChangeNotifier {
         isFastingDay: isFastingDay,
       );
       _currentPlan = response;
-
-      // Prepend new meals to saved list (optimistic update)
       _savedPlans = [...response.meals, ..._savedPlans];
-
       return response;
+    } on SubscriptionRequiredException catch (e) {
+      _subscriptionError = e;
+      _error = e.message ?? 'Premium subscription required';
+      return null;
     } catch (e) {
       _error = _formatError(e);
       return null;
@@ -95,7 +86,6 @@ class MealPlanProvider extends ChangeNotifier {
     }
   }
 
-  /// Fetch all saved meal plans for the user (optionally filtered by date).
   Future<void> loadSavedPlans({
     String? startDate,
     String? endDate,
@@ -120,18 +110,13 @@ class MealPlanProvider extends ChangeNotifier {
     }
   }
 
-  /// Delete a saved meal plan by its numeric ID.
   Future<bool> deleteMealPlan(int id) async {
     _error = null;
     try {
       await _service.deleteMealPlan(id);
       _savedPlans = _savedPlans.where((m) => m.id != id).toList();
-
-      // If the deleted meal was part of the currently displayed plan, also
-      // remove it from the current plan.
       if (_currentPlan != null) {
-        final updatedMeals =
-            _currentPlan!.meals.where((m) => m.id != id).toList();
+        final updatedMeals = _currentPlan!.meals.where((m) => m.id != id).toList();
         _currentPlan = MealPlanResponse(
           success: _currentPlan!.success,
           message: _currentPlan!.message,
@@ -151,7 +136,6 @@ class MealPlanProvider extends ChangeNotifier {
     }
   }
 
-  /// Re-compute the MealPlanSummary after meals are deleted client-side.
   MealPlanSummary _calculateSummary(List<MealPlan> meals) {
     final calories = meals.fold<double>(0, (s, m) => s + m.calories);
     final gl = meals.fold<double>(0, (s, m) => s + m.glycemicLoad);
@@ -162,13 +146,16 @@ class MealPlanProvider extends ChangeNotifier {
     );
   }
 
-  /// Clear the currently displayed plan (e.g., when user navigates away).
   void clearCurrentPlan() {
     _currentPlan = null;
     notifyListeners();
   }
 
-  /// Reset the entire state (used on logout).
+  void clearSubscriptionError() {
+    _subscriptionError = null;
+    notifyListeners();
+  }
+
   void reset() {
     _currentPlan = null;
     _savedPlans = [];
@@ -177,13 +164,12 @@ class MealPlanProvider extends ChangeNotifier {
     _error = null;
     _lastGeneratedDate = null;
     _lastFastingPreference = false;
+    _subscriptionError = null;
     notifyListeners();
   }
 
-  /// Convert raw exceptions into a user-friendly message.
   String _formatError(Object error) {
     final msg = error.toString();
-    // Strip "Exception: " prefix from our service layer for a cleaner display
     return msg.replaceFirst('Exception: ', '');
   }
 }

@@ -1,48 +1,45 @@
 import 'package:dio/dio.dart';
 import 'package:logging/logging.dart';
 import '../storage/secure_storage_service.dart';
+import 'subscription_error_interceptor.dart';
 
 /// Exception thrown when an HTTP request fails with a non-2xx status code.
 class HttpException extends DioException {
   HttpException(String message, [int? statusCode])
-    : super(
-        requestOptions: RequestOptions(path: ''),
-        type: DioExceptionType.badResponse,
-        message: message,
-        response: Response(
+      : super(
           requestOptions: RequestOptions(path: ''),
-          statusCode: statusCode,
-        ),
-      );
+          type: DioExceptionType.badResponse,
+          message: message,
+          response: Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: statusCode,
+          ),
+        );
 }
 
 /// Exception thrown when the user is not authenticated (401).
 class UnauthorizedException extends DioException {
   UnauthorizedException(String message)
-    : super(
-        requestOptions: RequestOptions(path: ''),
-        type: DioExceptionType.badResponse,
-        message: message,
-      );
+      : super(
+          requestOptions: RequestOptions(path: ''),
+          type: DioExceptionType.badResponse,
+          message: message,
+        );
 }
 
 /// Singleton Dio client configured with base URL, interceptors, and error handling.
 class ApiClient {
-  static final ApiClient _instance = ApiClient._init();
+  static final ApiClient _instance = ApiClient._internal();
 
-  /// Get the singleton instance of ApiClient
-  factory ApiClient() {
-    return _instance;
-  }
+  factory ApiClient() => _instance;
 
   static final Logger _logger = Logger('ApiClient');
 
   late final Dio _dio;
-  final SecureStorageService _storage = SecureStorageService();
 
   Dio get dio => _dio;
 
-  ApiClient._init() {
+  ApiClient._internal() {
     _dio = Dio(
       BaseOptions(
         baseUrl: 'http://localhost:5000/api',
@@ -56,7 +53,7 @@ class ApiClient {
       ),
     );
 
-    _dio.interceptors.add(AuthInterceptor(_storage));
+    _dio.interceptors.add(AuthInterceptor());
     _dio.interceptors.add(
       LogInterceptor(
         request: true,
@@ -67,15 +64,14 @@ class ApiClient {
         logPrint: (obj) => _logger.info(obj),
       ),
     );
-    _dio.interceptors.add(_ErrorInterceptor());
+    _dio.interceptors.add(SubscriptionErrorInterceptor());
+    _dio.interceptors.add(ApiErrorInterceptor());
   }
 }
 
 /// Interceptor that attaches the JWT token to every outgoing request.
 class AuthInterceptor extends Interceptor {
-  final SecureStorageService _storage;
-
-  AuthInterceptor(this._storage);
+  final SecureStorageService _storage = SecureStorageService();
 
   @override
   void onRequest(
@@ -91,13 +87,12 @@ class AuthInterceptor extends Interceptor {
 }
 
 /// Interceptor that converts non-2xx responses into typed exceptions.
-class _ErrorInterceptor extends Interceptor {
+class ApiErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     final statusCode = err.response?.statusCode;
 
     if (statusCode == 401) {
-      // Clear stored credentials and propagate an UnauthorizedException
       final storage = SecureStorageService();
       await storage.removeToken();
       await storage.removeSession();
@@ -107,16 +102,14 @@ class _ErrorInterceptor extends Interceptor {
       return;
     }
 
-    final message = _extractErrorMessage(err);
+    final message = _extractMessage(err);
     handler.next(HttpException(message, statusCode));
   }
 
-  String _extractErrorMessage(DioException err) {
-    if (err.response?.data is Map) {
-      final data = err.response!.data as Map;
-      if (data['message'] is String) {
-        return data['message'] as String;
-      }
+  String _extractMessage(DioException err) {
+    final data = err.response?.data;
+    if (data is Map && data['message'] is String) {
+      return data['message'] as String;
     }
     return err.message ?? 'An unexpected error occurred';
   }

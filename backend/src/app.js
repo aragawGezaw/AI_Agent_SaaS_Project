@@ -36,6 +36,8 @@ const mealHistoryRouter = require('./routes/meal_history.routes.js');
 const userGoalsRouter = require('./routes/user_goals.routes.js');
 const resourcesRouter = require('./routes/resources.routes.js');
 const agentRouter = require('./routes/agent.routes.js');
+const analyticsRouter = require('./routes/analytics.routes.js');
+const notificationsRouter = require('./routes/notifications.routes.js');
 
 // Mount routes
 app.use('/api/auth', authRouter);
@@ -48,6 +50,8 @@ app.use('/api/meal-history', mealHistoryRouter);
 app.use('/api/user/goals', userGoalsRouter);
 app.use('/api/resources', resourcesRouter);
 app.use('/api/agent', agentRouter);
+app.use('/api/analytics', analyticsRouter);
+app.use('/api/notifications', notificationsRouter);
 
 /**
  * @route GET /api/health
@@ -97,6 +101,14 @@ app.use((err, req, res, next) => {
 
 // Export app for testing and integration
 module.exports = app;
+
+// Start notification scheduler (only when server is the entry point)
+try {
+  const { startScheduler } = require('./services/notification.scheduler.js');
+  startScheduler();
+} catch (err) {
+  console.error('Failed to start notification scheduler:', err.message);
+}
 
 // Start server if this file is executed directly
 if (require.main === module) {

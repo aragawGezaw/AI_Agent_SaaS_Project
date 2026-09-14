@@ -625,6 +625,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Generate a plan from the Generate tab above'**
   String get generateFirstPlan;
+
+  /// Title of the health analytics dashboard screen
+  ///
+  /// In en, this message translates to:
+  /// **'Health Dashboard'**
+  String get healthDashboard;
+
+  /// Heading for the weekly summary section
+  ///
+  /// In en, this message translates to:
+  /// **'7-Day Overview'**
+  String get weeklyOverview;
+
+  /// Heading for today's metrics section
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Progress'**
+  String get todaysProgress;
+
+  /// Label for calories metric
+  ///
+  /// In en, this message translates to:
+  /// **'Calories'**
+  String get calories;
+
+  /// Label for glycemic load metric
+  ///
+  /// In en, this message translates to:
+  /// **'Glycemic Load'**
+  String get glycemicLoad;
+
+  /// Label for protein macro
+  ///
+  /// In en, this message translates to:
+  /// **'Protein'**
+  String get protein;
+
+  /// Label for carbohydrates macro
+  ///
+  /// In en, this message translates to:
+  /// **'Carbs'**
+  String get carbs;
+
+  /// Label for fat macro
+  ///
+  /// In en, this message translates to:
+  /// **'Fat'**
+  String get fat;
+
+  /// Label for meal count metric
+  ///
+  /// In en, this message translates to:
+  /// **'Meals Logged'**
+  String get mealsLogged;
+
+  /// Suffix for daily average values
+  ///
+  /// In en, this message translates to:
+  /// **'Avg / Day'**
+  String get avgDaily;
+
+  /// Label for total values
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// Label for goal/target values
+  ///
+  /// In en, this message translates to:
+  /// **'Target'**
+  String get target;
+
+  /// Progress label showing percentage of daily target
+  ///
+  /// In en, this message translates to:
+  /// **'{value}% of target'**
+  String ofTarget(int value);
+
+  /// Low glycemic load status label
+  ///
+  /// In en, this message translates to:
+  /// **'Low GL'**
+  String get glycemicLoadLow;
+
+  /// Moderate glycemic load status label
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate GL'**
+  String get glycemicLoadModerate;
+
+  /// Exceeded glycemic load status label
+  ///
+  /// In en, this message translates to:
+  /// **'GL Exceeded'**
+  String get glycemicLoadExceeded;
+
+  /// Abbreviation for kilocalories
+  ///
+  /// In en, this message translates to:
+  /// **'kcal'**
+  String get kcal;
+
+  /// Abbreviation for grams
+  ///
+  /// In en, this message translates to:
+  /// **'g'**
+  String get g;
+
+  /// Empty state when no meal history data is available
+  ///
+  /// In en, this message translates to:
+  /// **'No analytics data yet'**
+  String get noAnalyticsData;
+
+  /// Helper text under empty analytics state
+  ///
+  /// In en, this message translates to:
+  /// **'Start logging meals to see your health analytics'**
+  String get startTrackingMeals;
+
+  /// Quick-nav button to navigate to the AI meal plan screen
+  ///
+  /// In en, this message translates to:
+  /// **'View Today\'s Meal Plan'**
+  String get viewTodaysMealPlan;
+
+  /// Quick-nav button to navigate to the meal history screen
+  ///
+  /// In en, this message translates to:
+  /// **'View Food Log'**
+  String get viewFoodLog;
+
+  /// Heading for the metabolic gauge section
+  ///
+  /// In en, this message translates to:
+  /// **'Metabolic Health'**
+  String get metabolicHealth;
+
+  /// Heading for macro distribution section
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrient Breakdown'**
+  String get nutrientBreakdown;
+
+  /// Heading for macro pie/distribution chart
+  ///
+  /// In en, this message translates to:
+  /// **'Macros Distribution'**
+  String get macrosDistribution;
+
+  /// Label for today's date/time reference
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
 }
 
 class _AppLocalizationsDelegate

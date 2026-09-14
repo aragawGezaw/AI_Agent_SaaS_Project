@@ -273,4 +273,85 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get generateFirstPlan => 'Generate a plan from the Generate tab above';
+
+  @override
+  String get healthDashboard => 'Health Dashboard';
+
+  @override
+  String get weeklyOverview => '7-Day Overview';
+
+  @override
+  String get todaysProgress => 'Today\'s Progress';
+
+  @override
+  String get calories => 'Calories';
+
+  @override
+  String get glycemicLoad => 'Glycemic Load';
+
+  @override
+  String get protein => 'Protein';
+
+  @override
+  String get carbs => 'Carbs';
+
+  @override
+  String get fat => 'Fat';
+
+  @override
+  String get mealsLogged => 'Meals Logged';
+
+  @override
+  String get avgDaily => 'Avg / Day';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get target => 'Target';
+
+  @override
+  String ofTarget(int value) {
+    return '$value% of target';
+  }
+
+  @override
+  String get glycemicLoadLow => 'Low GL';
+
+  @override
+  String get glycemicLoadModerate => 'Moderate GL';
+
+  @override
+  String get glycemicLoadExceeded => 'GL Exceeded';
+
+  @override
+  String get kcal => 'kcal';
+
+  @override
+  String get g => 'g';
+
+  @override
+  String get noAnalyticsData => 'No analytics data yet';
+
+  @override
+  String get startTrackingMeals =>
+      'Start logging meals to see your health analytics';
+
+  @override
+  String get viewTodaysMealPlan => 'View Today\'s Meal Plan';
+
+  @override
+  String get viewFoodLog => 'View Food Log';
+
+  @override
+  String get metabolicHealth => 'Metabolic Health';
+
+  @override
+  String get nutrientBreakdown => 'Nutrient Breakdown';
+
+  @override
+  String get macrosDistribution => 'Macros Distribution';
+
+  @override
+  String get today => 'Today';
 }

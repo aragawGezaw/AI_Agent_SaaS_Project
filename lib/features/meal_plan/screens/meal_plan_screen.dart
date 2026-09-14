@@ -5,6 +5,7 @@ import '../models/meal_plan.dart';
 import '../providers/meal_plan_provider.dart';
 import '../services/meal_plan_api_service.dart';
 import '../widgets/meal_card.dart';
+import '../../subscription/screens/paywall_screen.dart';
 
 class MealPlanScreen extends StatefulWidget {
   const MealPlanScreen({super.key});
@@ -58,6 +59,12 @@ class _MealPlanScreenState extends State<MealPlanScreen>
           backgroundColor: const Color(0xFF2E7D32),
         ),
       );
+    } else if (provider.subscriptionError != null) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const PaywallScreen()),
+      );
+      provider.clearSubscriptionError();
     } else if (provider.error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(provider.error!), backgroundColor: Colors.red),

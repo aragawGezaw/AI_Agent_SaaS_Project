@@ -183,5 +183,114 @@
   "generateFirstPlan": "Generate a plan from the Generate tab above",
   "@generateFirstPlan": {
     "description": "Helper text under empty state"
+  },
+  "healthDashboard": "Health Dashboard",
+  "@healthDashboard": {
+    "description": "Title of the health analytics dashboard screen"
+  },
+  "weeklyOverview": "7-Day Overview",
+  "@weeklyOverview": {
+    "description": "Heading for the weekly summary section"
+  },
+  "todaysProgress": "Today's Progress",
+  "@todaysProgress": {
+    "description": "Heading for today's metrics section"
+  },
+  "calories": "Calories",
+  "@calories": {
+    "description": "Label for calories metric"
+  },
+  "glycemicLoad": "Glycemic Load",
+  "@glycemicLoad": {
+    "description": "Label for glycemic load metric"
+  },
+  "protein": "Protein",
+  "@protein": {
+    "description": "Label for protein macro"
+  },
+  "carbs": "Carbs",
+  "@carbs": {
+    "description": "Label for carbohydrates macro"
+  },
+  "fat": "Fat",
+  "@fat": {
+    "description": "Label for fat macro"
+  },
+  "mealsLogged": "Meals Logged",
+  "@mealsLogged": {
+    "description": "Label for meal count metric"
+  },
+  "avgDaily": "Avg / Day",
+  "@avgDaily": {
+    "description": "Suffix for daily average values"
+  },
+  "total": "Total",
+  "@total": {
+    "description": "Label for total values"
+  },
+  "target": "Target",
+  "@target": {
+    "description": "Label for goal/target values"
+  },
+  "ofTarget": "{value}% of target",
+  "@ofTarget": {
+    "description": "Progress label showing percentage of daily target",
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "glycemicLoadLow": "Low GL",
+  "@glycemicLoadLow": {
+    "description": "Low glycemic load status label"
+  },
+  "glycemicLoadModerate": "Moderate GL",
+  "@glycemicLoadModerate": {
+    "description": "Moderate glycemic load status label"
+  },
+  "glycemicLoadExceeded": "GL Exceeded",
+  "@glycemicLoadExceeded": {
+    "description": "Exceeded glycemic load status label"
+  },
+  "kcal": "kcal",
+  "@kcal": {
+    "description": "Abbreviation for kilocalories"
+  },
+  "g": "g",
+  "@g": {
+    "description": "Abbreviation for grams"
+  },
+  "noAnalyticsData": "No analytics data yet",
+  "@noAnalyticsData": {
+    "description": "Empty state when no meal history data is available"
+  },
+  "startTrackingMeals": "Start logging meals to see your health analytics",
+  "@startTrackingMeals": {
+    "description": "Helper text under empty analytics state"
+  },
+  "viewTodaysMealPlan": "View Today's Meal Plan",
+  "@viewTodaysMealPlan": {
+    "description": "Quick-nav button to navigate to the AI meal plan screen"
+  },
+  "viewFoodLog": "View Food Log",
+  "@viewFoodLog": {
+    "description": "Quick-nav button to navigate to the meal history screen"
+  },
+  "metabolicHealth": "Metabolic Health",
+  "@metabolicHealth": {
+    "description": "Heading for the metabolic gauge section"
+  },
+  "nutrientBreakdown": "Nutrient Breakdown",
+  "@nutrientBreakdown": {
+    "description": "Heading for macro distribution section"
+  },
+  "macrosDistribution": "Macros Distribution",
+  "@macrosDistribution": {
+    "description": "Heading for macro pie/distribution chart"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Label for today's date/time reference"
   }
 }

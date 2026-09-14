@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:provider/provider.dart';
-import 'features/auth/auth_state.dart';
-import 'features/auth/auth_screen.dart';
-import 'features/nutrition/screens/meal_logging_screen.dart';
-import 'features/nutrition/screens/meal_history_screen.dart';
-import 'features/nutrition/screens/settings_screen.dart';
-import 'features/education/providers/education_provider.dart';
-import 'features/education/screens/resources_screen.dart';
-import 'features/meal_plan/providers/meal_plan_provider.dart';
-import 'features/meal_plan/screens/meal_plan_screen.dart';
-import 'l10n/app_localizations.dart';
-import 'core/providers/language_provider.dart';
-import 'core/providers/user_goals_provider.dart';
+import 'package:ai_agent_saas_project/features/auth/auth_state.dart';
+import 'package:ai_agent_saas_project/features/auth/auth_screen.dart';
+import 'package:ai_agent_saas_project/features/nutrition/screens/meal_logging_screen.dart';
+import 'package:ai_agent_saas_project/features/nutrition/screens/meal_history_screen.dart';
+import 'package:ai_agent_saas_project/features/nutrition/screens/settings_screen.dart';
+import 'package:ai_agent_saas_project/features/education/providers/education_provider.dart';
+import 'package:ai_agent_saas_project/features/education/screens/resources_screen.dart';
+import 'package:ai_agent_saas_project/features/meal_plan/providers/meal_plan_provider.dart';
+import 'package:ai_agent_saas_project/features/meal_plan/screens/meal_plan_screen.dart';
+import 'package:ai_agent_saas_project/features/subscription/providers/subscription_provider.dart';
+import 'package:ai_agent_saas_project/features/subscription/screens/paywall_screen.dart';
+import 'package:ai_agent_saas_project/features/subscription/screens/subscription_success_screen.dart';
+import 'package:ai_agent_saas_project/features/notifications/providers/notification_provider.dart';
+import 'package:ai_agent_saas_project/features/notifications/screens/notification_settings_screen.dart';
+import 'package:ai_agent_saas_project/l10n/app_localizations.dart';
+import 'package:ai_agent_saas_project/core/providers/language_provider.dart';
+import 'package:ai_agent_saas_project/core/providers/user_goals_provider.dart';
+
+/// Global navigator key for routing paywall pushes from interceptors.
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
+  usePathUrlStrategy();
   runApp(const MyApp());
 }
 
@@ -27,25 +37,32 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthState()),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => UserGoalsNotifier()),
-        ChangeNotifierProvider(
-          create: (_) => EducationProvider(),
-        ), // Added provider
-        ChangeNotifierProvider(
-          create: (_) => MealPlanProvider(),
-        ), // Added provider
+        ChangeNotifierProvider(create: (_) => EducationProvider()),
+        ChangeNotifierProvider(create: (_) => MealPlanProvider()),
+        ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: Consumer<LanguageProvider>(
         builder: (context, languageProvider, _) {
           return MaterialApp(
+            navigatorKey: rootNavigatorKey,
             title: 'Smart Nutrition and Health',
             theme: ThemeData(primarySwatch: Colors.green, useMaterial3: true),
             locale: languageProvider.locale,
-            home: const AuthScreen(),
+            initialRoute: '/',
             routes: {
+              '/': (context) => const AuthScreen(),
               '/home': (context) => Scaffold(
                 appBar: AppBar(
                   title: const Text('Smart Nutrition & Health'),
                   actions: [
+                    IconButton(
+                      icon: const Icon(Icons.notifications_outlined),
+                      tooltip: 'Notifications',
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/notifications');
+                      },
+                    ),
                     IconButton(
                       icon: const Icon(Icons.settings_rounded),
                       tooltip: 'Settings',
@@ -96,10 +113,8 @@ class MyApp extends StatelessWidget {
                         ),
                         icon: const Icon(Icons.menu_book),
                         label: const Text('Educational Resource Hub'),
-                        onPressed: () => Navigator.pushNamed(
-                          context,
-                          '/resources',
-                        ), // Added navigation button
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/resources'),
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton.icon(
@@ -109,10 +124,23 @@ class MyApp extends StatelessWidget {
                         ),
                         icon: const Icon(Icons.auto_awesome_rounded),
                         label: const Text('AI Meal Planner'),
-                        onPressed: () => Navigator.pushNamed(
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/meal-plan'),
+                      ),
+                      const SizedBox(height: 12),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange.shade700,
+                          foregroundColor: Colors.white,
+                        ),
+                        icon: const Icon(Icons.workspace_premium_rounded),
+                        label: const Text('Upgrade to Premium'),
+                        onPressed: () => Navigator.push(
                           context,
-                          '/meal-plan',
-                        ), // Added AI meal plan navigation
+                          MaterialPageRoute(
+                            builder: (_) => const PaywallScreen(),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -123,6 +151,28 @@ class MyApp extends StatelessWidget {
               '/meal-history': (context) => const MealHistoryScreen(),
               '/settings': (context) => const SettingsScreen(),
               '/resources': (context) => const ResourcesScreen(),
+              '/paywall': (context) => const PaywallScreen(),
+              '/subscription/success': (context) {
+                final sessionId = Uri.base.queryParameters['session_id'];
+                return SubscriptionSuccessScreen(sessionId: sessionId);
+              },
+              '/notifications': (context) => const NotificationSettingsScreen(),
+              '/login': (context) => const AuthScreen(),
+              '/auth': (context) => const AuthScreen(),
+            },
+            onGenerateRoute: (settings) {
+              final uri = Uri.tryParse(settings.name ?? '');
+              if (uri != null && uri.path == '/subscription/success') {
+                final sessionId =
+                    uri.queryParameters['session_id'] ??
+                    Uri.base.queryParameters['session_id'];
+                return MaterialPageRoute(
+                  settings: settings,
+                  builder: (_) =>
+                      SubscriptionSuccessScreen(sessionId: sessionId),
+                );
+              }
+              return null;
             },
             debugShowCheckedModeBanner: false,
             localizationsDelegates: AppLocalizations.localizationsDelegates,

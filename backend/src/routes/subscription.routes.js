@@ -1,63 +1,82 @@
 const express = require('express');
 const router = express.Router();
-const stripeService = require('../services/stripe.service');
+const subscriptionController = require('../controllers/subscription.controller');
 const authMiddleware = require('../middleware/auth.middleware');
-const { query } = require('../db');
 
 /**
  * @route GET /api/subscription/status
- * @desc Get current user subscription status
- * @access Private
+ * @desc Get current user subscription status and feature gating
+ * @access Private (requires authentication)
  */
-router.get('/status', authMiddleware, async (req, res, next) => {
-  try {
-    const userId = req.user.id;
-    const result = await query(
-      'SELECT plan_type, status, current_period_end FROM subscriptions WHERE user_id = $1',
-      [userId]
-    );
-
-    const subscription = result.rows[0] || { plan_type: 'free', status: 'active' };
-
-    res.status(200).json(subscription);
-  } catch (error) {
-    next(error);
-  }
-});
+router.get('/status', authMiddleware, subscriptionController.getSubscriptionStatus);
 
 /**
  * @route POST /api/subscription/checkout
- * @desc Create a Stripe checkout session for premium subscription
- * @access Private
+ * @desc Create a Stripe checkout session for premium subscription upgrade
+ * @access Private (requires authentication)
+ * 
+ * Creates a Stripe checkout session using process.env.STRIPE_PREMIUM_PRICE_ID
+ * and returns the session URL for the frontend to redirect the user.
  */
-router.post('/checkout', authMiddleware, async (req, res, next) => {
+router.post('/checkout', authMiddleware, subscriptionController.createCheckoutSession);
+
+/**
+ * @route POST /api/subscription/portal
+ * @desc Create a Stripe billing portal session for managing subscriptions
+ * @access Private (requires authentication)
+ * 
+ * Returns a Stripe Customer Portal URL where users can:
+ * - Update their payment method
+ * - View billing history
+ * - Cancel their subscription
+ */
+router.post('/portal', authMiddleware, subscriptionController.openBillingPortal);
+
+/**
+ * @route POST /api/subscription/cancel
+ * @desc Cancel the user's active subscription (sets status to 'cancelled')
+ * @access Private (requires authentication)
+ */
+router.post('/cancel', authMiddleware, async (req, res, next) => {
   try {
     const userId = req.user.id;
-    // We need the user email to create a Stripe customer
-    const userRes = await query('SELECT email FROM users WHERE id = $1', [userId]);
-    const email = userRes.rows[0]?.email;
-
-    if (!email) {
-      return res.status(404).json({ error: 'User email not found' });
+    const { query } = require('../db');
+    const result = await query(
+      `UPDATE subscriptions
+       SET status = 'cancelled', updated_at = NOW()
+       WHERE user_id = $1 AND status = 'active'
+       RETURNING *`,
+      [userId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ code: 'NO_ACTIVE_SUBSCRIPTION', message: 'No active subscription found' });
     }
-
-    const session = await stripeService.createCheckoutSession(userId, email);
-    res.status(200).json({ url: session.url });
+    res.status(200).json({ success: true, message: 'Subscription cancelled' });
   } catch (error) {
     next(error);
   }
 });
 
 /**
- * @route POST /api/subscription/portal
- * @desc Create a Stripe billing portal session
- * @access Private
+ * @route POST /api/subscription/resume
+ * @desc Resume a previously cancelled subscription
+ * @access Private (requires authentication)
  */
-router.post('/portal', authMiddleware, async (req, res, next) => {
+router.post('/resume', authMiddleware, async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const session = await stripeService.createPortalSession(userId);
-    res.status(200).json({ url: session.url });
+    const { query } = require('../db');
+    const result = await query(
+      `UPDATE subscriptions
+       SET status = 'active', updated_at = NOW()
+       WHERE user_id = $1 AND status = 'cancelled'
+       RETURNING *`,
+      [userId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ code: 'NO_CANCELLED_SUBSCRIPTION', message: 'No cancelled subscription found' });
+    }
+    res.status(200).json({ success: true, message: 'Subscription resumed' });
   } catch (error) {
     next(error);
   }
@@ -65,20 +84,17 @@ router.post('/portal', authMiddleware, async (req, res, next) => {
 
 /**
  * @route POST /api/subscription/webhook
- * @desc Handle Stripe webhook events
+ * @desc Handle Stripe webhook events (checkout.session.completed, etc.)
  * @access Public (Stripe Signature required)
+ * 
+ * This route must receive a RAW request body for Stripe signature verification,
+ * which is why it uses express.raw() middleware. The JSON parsing is bypassed
+ * for this specific route in app.js.
  */
-router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  const payload = req.body;
-
-  try {
-    await stripeService.handleWebhook(payload, sig);
-    res.status(200).json({ received: true });
-  } catch (error) {
-    console.error('Webhook Error:', error.message);
-    res.status(400).send(`Webhook Error: ${error.message}`);
-  }
-});
+router.post(
+  '/webhook',
+  express.raw({ type: 'application/json' }),
+  subscriptionController.handleStripeWebhook
+);
 
 module.exports = router;
