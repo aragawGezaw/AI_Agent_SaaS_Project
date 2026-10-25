@@ -1,31 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../middleware/auth.middleware.js');
+const { aiGenerationLimiter } = require('../middleware/rateLimiter');
 const { generateMealPlan, getMealPlans, deleteMealPlan } = require('../controllers/agent.controller.js');
 
 /**
  * @route POST /api/agent/generate-meal-plan
  * @desc Generate an AI-powered personalized meal plan and save it to the database
- * @access Private (requires JWT token)
+ * @access Private (requires JWT token + Rate Limiting)
  * 
  * Body:
  * {
  *   "plan_date": "YYYY-MM-DD" (optional, defaults to today),
- *   "is_fasting_day": boolean (optional, defaults to false - for Ethiopian Orthodox fasting)
- * }
- * 
- * Response:
- * {
- *   success: true,
- *   message: "Meal plan generated and saved successfully",
- *   plan_date: "...",
- *   is_fasting_meal: boolean,
- *   recommendation_source: "gemini_ai",
- *   meals: [...],
- *   summary: { total_calories, total_glycemic_load, meal_count }
+ *   "is_fasting_day": boolean (optional, defaults to false - for Ethiopian Orthodox fasting / የጾም ቀን)
  * }
  */
-router.post('/generate-meal-plan', authenticateToken, generateMealPlan);
+router.post('/generate-meal-plan', authenticateToken, aiGenerationLimiter, generateMealPlan);
 
 /**
  * @route GET /api/agent/meal-plans

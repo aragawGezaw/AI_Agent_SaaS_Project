@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /// Data model representing a single AI-generated meal plan entry.
 /// Maps to the backend `meal_plans` table (migration 009).
 class MealPlan {
@@ -6,11 +8,14 @@ class MealPlan {
   final DateTime planDate;
   final String mealType; // breakfast, lunch, dinner, snack
   final String? recipeId;
+  final String? foodName; // Specific food/dish name (e.g., Shiro Wat, Injera)
   final double glycemicLoad;
   final double calories;
   final Map<String, dynamic> macronutrients; // {protein_g, carbs_g, fat_g}
   final bool isFastingMeal;
   final String? recommendationSource;
+  final List<String> ingredients; // For Smart Grocery List generation
+  final List<String> instructions; // Step-by-step recipe instructions
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -20,16 +25,55 @@ class MealPlan {
     required this.planDate,
     required this.mealType,
     this.recipeId,
+    this.foodName,
     required this.glycemicLoad,
     required this.calories,
     required this.macronutrients,
     required this.isFastingMeal,
     this.recommendationSource,
+    this.ingredients = const [],
+    this.instructions = const [],
     required this.createdAt,
     this.updatedAt,
   });
 
   factory MealPlan.fromJson(Map<String, dynamic> json) {
+    // 1. Robust macronutrients extraction supporting both nested map and flat root keys
+    Map<String, dynamic> macros = {};
+    if (json['macronutrients'] is Map) {
+      macros = Map<String, dynamic>.from(json['macronutrients']);
+    }
+    if (macros.isEmpty) {
+      macros = {
+        'protein_g': json['protein'] ?? json['protein_g'] ?? 0.0,
+        'carbs_g':
+            json['carbs'] ?? json['carbs_g'] ?? json['carbohydrates'] ?? 0.0,
+        'fat_g': json['fat'] ?? json['fat_g'] ?? 0.0,
+      };
+    }
+
+    // 2. Robust safe parsing for ingredients list
+    List<String> parsedIngredients = [];
+    if (json['ingredients'] is List) {
+      parsedIngredients = (json['ingredients'] as List)
+          .map((e) => e.toString())
+          .where((e) => e.isNotEmpty)
+          .toList();
+    } else if (json['ingredients'] is String) {
+      parsedIngredients = [json['ingredients'] as String];
+    }
+
+    // 3. Robust safe parsing for instructions list
+    List<String> parsedInstructions = [];
+    if (json['instructions'] is List) {
+      parsedInstructions = (json['instructions'] as List)
+          .map((e) => e.toString())
+          .where((e) => e.isNotEmpty)
+          .toList();
+    } else if (json['instructions'] is String) {
+      parsedInstructions = [json['instructions'] as String];
+    }
+
     return MealPlan(
       id: _parseInt(json['id']),
       userId: json['user_id'] as String? ?? '',
@@ -38,12 +82,19 @@ class MealPlan {
       ),
       mealType: json['meal_type'] as String? ?? 'snack',
       recipeId: json['recipe_id'] as String?,
+      foodName:
+          json['food_name'] as String? ??
+          json['recipe_name'] as String? ??
+          json['title'] as String? ??
+          json['description'] as String? ??
+          json['name'] as String?,
       glycemicLoad: _parseDouble(json['glycemic_load']),
       calories: _parseDouble(json['calories']),
-      macronutrients:
-          json['macronutrients'] as Map<String, dynamic>? ?? const {},
+      macronutrients: macros,
       isFastingMeal: json['is_fasting_meal'] as bool? ?? false,
       recommendationSource: json['recommendation_source'] as String?,
+      ingredients: parsedIngredients,
+      instructions: parsedInstructions,
       createdAt: DateTime.parse(
         json['created_at'] as String? ?? DateTime.now().toIso8601String(),
       ),
@@ -60,11 +111,14 @@ class MealPlan {
       'plan_date': planDate.toIso8601String(),
       'meal_type': mealType,
       'recipe_id': recipeId,
+      'food_name': foodName,
       'glycemic_load': glycemicLoad,
       'calories': calories,
       'macronutrients': macronutrients,
       'is_fasting_meal': isFastingMeal,
       'recommendation_source': recommendationSource,
+      'ingredients': ingredients,
+      'instructions': instructions,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt?.toIso8601String(),
     };
@@ -72,7 +126,6 @@ class MealPlan {
 
   // --- Localized Display Helpers ---
 
-  /// Returns a localized label for the meal type (breakfast/lunch/dinner/snack)
   String getMealTypeLabel(String langCode) {
     switch (mealType.toLowerCase()) {
       case 'breakfast':
@@ -88,23 +141,6 @@ class MealPlan {
     }
   }
 
-  /// Returns the appropriate Material icon for the meal type
-  String getMealTypeIconKey() {
-    switch (mealType.toLowerCase()) {
-      case 'breakfast':
-        return 'free_breakfast';
-      case 'lunch':
-        return 'lunch_dining';
-      case 'dinner':
-        return 'dinner_dining';
-      case 'snack':
-        return 'cookie';
-      default:
-        return 'restaurant';
-    }
-  }
-
-  /// Returns the brand color for the meal type
   int getMealTypeColor() {
     switch (mealType.toLowerCase()) {
       case 'breakfast':
@@ -120,44 +156,11 @@ class MealPlan {
     }
   }
 
-  /// Classifies glycemic load into low/medium/high buckets
-  String getGlClass() {
-    if (glycemicLoad <= 10.0) return 'low';
-    if (glycemicLoad <= 19.99) return 'medium';
-    return 'high';
-  }
-
-  /// Returns localized GL classification label
-  String getGlClassLabel(String langCode) {
-    final cls = getGlClass();
-    if (langCode == 'am') {
-      switch (cls) {
-        case 'low':
-          return 'ዝቅተኛ GL (Low)';
-        case 'medium':
-          return 'መካከለኛ GL (Med)';
-        case 'high':
-          return 'ከፍተኛ GL (High)';
-      }
-    }
-    switch (cls) {
-      case 'low':
-        return 'Low GL';
-      case 'medium':
-        return 'Medium GL';
-      case 'high':
-        return 'High GL';
-    }
-    return 'Low GL';
-  }
-
   // --- Macro Accessors ---
   double get proteinG => _readMacro(macronutrients, 'protein_g');
   double get carbsG => _readMacro(macronutrients, 'carbs_g');
   double get fatG => _readMacro(macronutrients, 'fat_g');
 }
-
-// --- Internal numeric parsers (handle pg DECIMAL → String or JSON int → num) ---
 
 double _parseDouble(dynamic value) {
   if (value == null) return 0.0;

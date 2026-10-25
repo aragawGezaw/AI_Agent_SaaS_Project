@@ -8,7 +8,7 @@ class MealPlanApiService {
   final ApiClient _apiClient;
 
   MealPlanApiService({ApiClient? apiClient})
-      : _apiClient = apiClient ?? ApiClient();
+    : _apiClient = apiClient ?? ApiClient();
 
   /// Generate a new AI-powered meal plan from the backend.
   /// Hits POST /api/agent/generate-meal-plan.
@@ -18,10 +18,12 @@ class MealPlanApiService {
   Future<MealPlanResponse> generateMealPlan({
     String? planDate, // YYYY-MM-DD; null defaults to today (server side)
     bool isFastingDay = false,
+    String language = 'am', // Added language code parameter ('am' or 'en')
   }) async {
     try {
       final body = <String, dynamic>{
         'is_fasting_day': isFastingDay,
+        'language': language, // <-- Transmits active language code to backend
       };
       if (planDate != null && planDate.isNotEmpty) {
         body['plan_date'] = planDate;
@@ -32,16 +34,20 @@ class MealPlanApiService {
         data: body,
       );
 
-      if (response.statusCode == 201 && response.data != null) {
-        return MealPlanResponse.fromJson(
-          response.data as Map<String, dynamic>,
-        );
+      if ((response.statusCode == 200 || response.statusCode == 201) &&
+          response.data != null) {
+        return MealPlanResponse.fromJson(response.data as Map<String, dynamic>);
       }
       throw Exception(
         'Failed to generate meal plan: Invalid server response (${response.statusCode})',
       );
     } on DioException catch (e) {
-      throw Exception(_extractDioMessage(e, 'Failed to generate meal plan'));
+      throw Exception(
+        _extractDioMessage(
+          e,
+          'Failed to generate meal plan. Please try again.',
+        ),
+      );
     } catch (e) {
       throw Exception('Unexpected error generating meal plan: $e');
     }
@@ -71,9 +77,7 @@ class MealPlanApiService {
       if (response.statusCode == 200 && response.data != null) {
         final data = response.data as Map<String, dynamic>;
         final list = (data['meal_plans'] as List<dynamic>? ?? [])
-            .map(
-              (e) => MealPlan.fromJson(e as Map<String, dynamic>),
-            )
+            .map((e) => MealPlan.fromJson(e as Map<String, dynamic>))
             .toList();
         return list;
       }
@@ -81,7 +85,7 @@ class MealPlanApiService {
         'Failed to fetch meal plans: Invalid server response (${response.statusCode})',
       );
     } on DioException catch (e) {
-      throw Exception(_extractDioMessage(e, 'Failed to fetch meal plans'));
+      throw Exception(_extractDioMessage(e, 'Failed to fetch meal plans.'));
     } catch (e) {
       throw Exception('Unexpected error fetching meal plans: $e');
     }
@@ -93,25 +97,43 @@ class MealPlanApiService {
     try {
       final response = await _apiClient.dio.delete('/agent/meal-plans/$id');
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 204) {
         return true;
       }
       throw Exception('Failed to delete meal plan');
     } on DioException catch (e) {
-      throw Exception(_extractDioMessage(e, 'Failed to delete meal plan'));
+      throw Exception(_extractDioMessage(e, 'Failed to delete meal plan.'));
     } catch (e) {
       throw Exception('Unexpected error deleting meal plan: $e');
     }
   }
 
-  /// Helper to extract a friendly message from a DioException.
+  /// Helper to extract a friendly message from a DioException across devices.
   String _extractDioMessage(DioException e, String fallback) {
-    if (e.response?.data is Map) {
-      final data = e.response!.data as Map;
-      final msg = data['message'];
-      if (msg is String && msg.isNotEmpty) return msg;
+    if (e.response?.data != null) {
+      final responseData = e.response!.data;
+      if (responseData is Map) {
+        final msg = responseData['message'] ?? responseData['error'];
+        if (msg is String && msg.isNotEmpty) return msg;
+        if (msg is List && msg.isNotEmpty) return msg.join(', ');
+      } else if (responseData is String && responseData.isNotEmpty) {
+        return responseData;
+      }
     }
-    return e.message ?? fallback;
+
+    // Fallback based on Dio error type for better user context
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
+        return 'Connection timeout. Please check your network connection.';
+      case DioExceptionType.connectionError:
+        return 'Unable to connect to server. Please ensure your backend is running.';
+      case DioExceptionType.badResponse:
+        return 'Server error (${e.response?.statusCode ?? "unknown"}). Please try again later.';
+      default:
+        return e.message ?? fallback;
+    }
   }
 }
 

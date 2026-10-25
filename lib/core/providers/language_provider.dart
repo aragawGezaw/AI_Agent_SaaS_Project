@@ -1,8 +1,9 @@
+// lib/core/providers/language_provider.dart
 import 'package:flutter/material.dart';
 import '../storage/secure_storage_service.dart';
 
 class LanguageProvider with ChangeNotifier {
-  Locale _locale = const Locale('am'); // Defaulting to Amharic as per cultural/local context guidelines, or English. Let's load the saved one, defaulting to 'am' or 'en'
+  Locale _locale = const Locale('am'); // Defaulting to Amharic
   final SecureStorageService _storageService = SecureStorageService();
 
   LanguageProvider() {
@@ -46,5 +47,10 @@ class LanguageProvider with ChangeNotifier {
       }
       notifyListeners();
     }
+  }
+
+  // Added to support direct Locale objects from your UI toggles
+  Future<void> setLocale(Locale newLocale) async {
+    await changeLanguage(newLocale.languageCode);
   }
 }

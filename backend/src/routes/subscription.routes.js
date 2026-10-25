@@ -12,23 +12,15 @@ router.get('/status', authMiddleware, subscriptionController.getSubscriptionStat
 
 /**
  * @route POST /api/subscription/checkout
- * @desc Create a Stripe checkout session for premium subscription upgrade
+ * @desc Create a checkout session for premium subscription upgrade
  * @access Private (requires authentication)
- * 
- * Creates a Stripe checkout session using process.env.STRIPE_PREMIUM_PRICE_ID
- * and returns the session URL for the frontend to redirect the user.
  */
 router.post('/checkout', authMiddleware, subscriptionController.createCheckoutSession);
 
 /**
  * @route POST /api/subscription/portal
- * @desc Create a Stripe billing portal session for managing subscriptions
+ * @desc Create a billing portal session for managing subscriptions
  * @access Private (requires authentication)
- * 
- * Returns a Stripe Customer Portal URL where users can:
- * - Update their payment method
- * - View billing history
- * - Cancel their subscription
  */
 router.post('/portal', authMiddleware, subscriptionController.openBillingPortal);
 
@@ -84,12 +76,8 @@ router.post('/resume', authMiddleware, async (req, res, next) => {
 
 /**
  * @route POST /api/subscription/webhook
- * @desc Handle Stripe webhook events (checkout.session.completed, etc.)
- * @access Public (Stripe Signature required)
- * 
- * This route must receive a RAW request body for Stripe signature verification,
- * which is why it uses express.raw() middleware. The JSON parsing is bypassed
- * for this specific route in app.js.
+ * @desc Handle payment webhook events
+ * @access Public (Signature required)
  */
 router.post(
   '/webhook',

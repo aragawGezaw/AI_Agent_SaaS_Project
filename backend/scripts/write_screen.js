@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = 'd:/AI_Agent_SaaS_Project/lib/features/meal_plan/screens/meal_plan_screen.dart';
+const path = '../lib/features/meal_plan/screens/meal_plan_screen.dart';
 const content = String.raw`import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../l10n/app_localizations.dart';

@@ -356,6 +356,96 @@ abstract class AppLocalizations {
   /// **'Diabetes Management'**
   String get goalDiabetes;
 
+  /// No description provided for @biometricTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric Inputs'**
+  String get biometricTitle;
+
+  /// No description provided for @weightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (kg)'**
+  String get weightLabel;
+
+  /// No description provided for @heightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Height (cm)'**
+  String get heightLabel;
+
+  /// No description provided for @ageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get ageLabel;
+
+  /// No description provided for @genderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get genderLabel;
+
+  /// No description provided for @male.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get male;
+
+  /// No description provided for @female.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get female;
+
+  /// No description provided for @activityLevelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Level'**
+  String get activityLevelLabel;
+
+  /// No description provided for @activitySedentary.
+  ///
+  /// In en, this message translates to:
+  /// **'Sedentary'**
+  String get activitySedentary;
+
+  /// No description provided for @activityLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get activityLight;
+
+  /// No description provided for @activityModerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get activityModerate;
+
+  /// No description provided for @activityActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get activityActive;
+
+  /// No description provided for @activityVeryActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Very Active'**
+  String get activityVeryActive;
+
+  /// No description provided for @autoCalculate.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-Calculate Targets'**
+  String get autoCalculate;
+
+  /// No description provided for @calculating.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculating...'**
+  String get calculating;
+
   /// No description provided for @dailyTargetsTitle.
   ///
   /// In en, this message translates to:

@@ -7,35 +7,63 @@ class SubscriptionService {
 
   SubscriptionService({Dio? dio}) : _dio = dio ?? ApiClient().dio;
 
+  /// Helper to safely extract error messages from Dio exceptions
+  String _extractErrorMessage(DioException e, String fallbackMessage) {
+    final data = e.response?.data;
+    if (data is Map && data['message'] != null) {
+      return data['message'].toString();
+    }
+    return e.message ?? fallbackMessage;
+  }
+
   Future<Subscription?> getSubscriptionStatus() async {
     try {
       final response = await _dio.get('/subscription/status');
       if (response.statusCode == 200 && response.data != null) {
-        return Subscription.fromJson(
-          response.data as Map<String, dynamic>,
-        );
+        return Subscription.fromJson(response.data as Map<String, dynamic>);
       }
     } on DioException catch (e) {
       throw Exception(
-        e.response?.data['message'] ?? 'Failed to fetch subscription status',
+        _extractErrorMessage(e, 'Failed to fetch subscription status'),
       );
     }
     return null;
   }
 
-  Future<String> createCheckoutSession() async {
+  /// Initializes a Chapa payment session supporting local ETB and global USD currency
+  Future<String> createCheckoutSession({
+    String amount = '99',
+    String currency = 'ETB',
+  }) async {
     try {
-      final response = await _dio.post('/subscription/checkout');
+      final response = await _dio.post(
+        '/payment/initialize',
+        data: {
+          'amount': amount,
+          'currency': currency.toUpperCase(),
+          'moduleType': 'subscription',
+        },
+      );
       if (response.statusCode == 200 && response.data != null) {
-        final url = response.data['url'] as String?;
+        final url = response.data['checkoutUrl'] as String?;
         if (url == null) throw Exception('No checkout URL returned');
         return url;
       }
       throw Exception('Failed to create checkout session');
     } on DioException catch (e) {
       throw Exception(
-        e.response?.data['message'] ?? 'Failed to create checkout session',
+        _extractErrorMessage(e, 'Failed to create checkout session'),
       );
+    }
+  }
+
+  /// Verifies Chapa transaction with backend
+  Future<bool> verifyPayment(String txRef) async {
+    try {
+      final response = await _dio.get('/payment/verify/$txRef');
+      return response.statusCode == 200 && response.data['success'] == true;
+    } on DioException catch (e) {
+      throw Exception(_extractErrorMessage(e, 'Failed to verify payment'));
     }
   }
 
@@ -49,9 +77,7 @@ class SubscriptionService {
       }
       throw Exception('Failed to open billing portal');
     } on DioException catch (e) {
-      throw Exception(
-        e.response?.data['message'] ?? 'Failed to open billing portal',
-      );
+      throw Exception(_extractErrorMessage(e, 'Failed to open billing portal'));
     }
   }
 
@@ -60,9 +86,7 @@ class SubscriptionService {
       final response = await _dio.post('/subscription/cancel');
       return response.statusCode == 200;
     } on DioException catch (e) {
-      throw Exception(
-        e.response?.data['message'] ?? 'Failed to cancel subscription',
-      );
+      throw Exception(_extractErrorMessage(e, 'Failed to cancel subscription'));
     }
   }
 
@@ -71,9 +95,7 @@ class SubscriptionService {
       final response = await _dio.post('/subscription/resume');
       return response.statusCode == 200;
     } on DioException catch (e) {
-      throw Exception(
-        e.response?.data['message'] ?? 'Failed to resume subscription',
-      );
+      throw Exception(_extractErrorMessage(e, 'Failed to resume subscription'));
     }
   }
 }

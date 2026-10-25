@@ -1,14 +1,19 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../core/api/subscription_error_interceptor.dart';
 import '../models/meal_plan.dart';
 import '../services/meal_plan_api_service.dart';
 
-/// State management for the AI Meal Planning module.
+/// State management for the AI Meal Planning module with offline resilience.
 class MealPlanProvider extends ChangeNotifier {
   final MealPlanApiService _service;
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+
+  static const String _cachedPlansKey = 'cached_meal_plans_key';
 
   MealPlanProvider({MealPlanApiService? service})
-      : _service = service ?? MealPlanApiService();
+    : _service = service ?? MealPlanApiService();
 
   // --- State ---
   MealPlanResponse? _currentPlan;
@@ -35,10 +40,12 @@ class MealPlanProvider extends ChangeNotifier {
   Map<String, List<MealPlan>> get savedPlansByDate {
     final map = <String, List<MealPlan>>{};
     for (final m in _savedPlans) {
+      // Convert to local time to prevent UTC timezone date shifting
+      final localDate = m.planDate.toLocal();
       final key =
-          '${m.planDate.year.toString().padLeft(4, '0')}-'
-          '${m.planDate.month.toString().padLeft(2, '0')}-'
-          '${m.planDate.day.toString().padLeft(2, '0')}';
+          '${localDate.year.toString().padLeft(4, '0')}-'
+          '${localDate.month.toString().padLeft(2, '0')}-'
+          '${localDate.day.toString().padLeft(2, '0')}';
       map.putIfAbsent(key, () => []).add(m);
     }
     const order = ['breakfast', 'lunch', 'dinner', 'snack'];
@@ -57,6 +64,7 @@ class MealPlanProvider extends ChangeNotifier {
   Future<MealPlanResponse?> generateMealPlan({
     String? planDate,
     bool isFastingDay = false,
+    String languageCode = 'am', // Defaults to Amharic
   }) async {
     _isGenerating = true;
     _error = null;
@@ -69,9 +77,14 @@ class MealPlanProvider extends ChangeNotifier {
       final response = await _service.generateMealPlan(
         planDate: planDate,
         isFastingDay: isFastingDay,
+        language: languageCode,
       );
       _currentPlan = response;
       _savedPlans = [...response.meals, ..._savedPlans];
+
+      // Cache updated saved plans locally for offline access
+      await _cacheSavedPlansLocally(_savedPlans);
+
       return response;
     } on SubscriptionRequiredException catch (e) {
       _subscriptionError = e;
@@ -102,8 +115,18 @@ class MealPlanProvider extends ChangeNotifier {
         limit: limit,
       );
       _savedPlans = list;
+
+      // Successfully fetched from server -> update local cache
+      await _cacheSavedPlansLocally(list);
     } catch (e) {
-      _error = _formatError(e);
+      // OFFLINE FALLBACK: Load from secure storage cache if network fails
+      final cachedList = await _loadCachedPlansLocally();
+      if (cachedList.isNotEmpty) {
+        _savedPlans = cachedList;
+        _error = null; // Clear error since offline cache successfully loaded
+      } else {
+        _error = _formatError(e);
+      }
     } finally {
       _isLoadingSaved = false;
       notifyListeners();
@@ -115,8 +138,14 @@ class MealPlanProvider extends ChangeNotifier {
     try {
       await _service.deleteMealPlan(id);
       _savedPlans = _savedPlans.where((m) => m.id != id).toList();
+
+      // Update local cache after deletion
+      await _cacheSavedPlansLocally(_savedPlans);
+
       if (_currentPlan != null) {
-        final updatedMeals = _currentPlan!.meals.where((m) => m.id != id).toList();
+        final updatedMeals = _currentPlan!.meals
+            .where((m) => m.id != id)
+            .toList();
         _currentPlan = MealPlanResponse(
           success: _currentPlan!.success,
           message: _currentPlan!.message,
@@ -134,6 +163,30 @@ class MealPlanProvider extends ChangeNotifier {
       notifyListeners();
       return false;
     }
+  }
+
+  // --- Local Caching Helpers ---
+
+  Future<void> _cacheSavedPlansLocally(List<MealPlan> plans) async {
+    try {
+      final jsonString = jsonEncode(plans.map((m) => m.toJson()).toList());
+      await _secureStorage.write(key: _cachedPlansKey, value: jsonString);
+    } catch (_) {
+      // Ignore caching errors silently
+    }
+  }
+
+  Future<List<MealPlan>> _loadCachedPlansLocally() async {
+    try {
+      final jsonString = await _secureStorage.read(key: _cachedPlansKey);
+      if (jsonString != null) {
+        final List<dynamic> decoded = jsonDecode(jsonString);
+        return decoded.map((item) => MealPlan.fromJson(item)).toList();
+      }
+    } catch (_) {
+      // Ignore decryption/parsing errors silently
+    }
+    return [];
   }
 
   MealPlanSummary _calculateSummary(List<MealPlan> meals) {

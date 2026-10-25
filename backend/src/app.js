@@ -3,17 +3,17 @@ const cors = require('cors');
 const morgan = require('morgan');
 const { pool, query } = require('./db/index.js');
 
+// 1. Initialize Express app FIRST
 const app = express();
 
-// Configure CORS
+// 2. Configure CORS
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Configure JSON body parser middleware
-// Skip JSON parsing for Stripe webhooks
+// 3. Configure JSON body parser middleware
 app.use((req, res, next) => {
   if (req.originalUrl === '/api/subscription/webhook') {
     next();
@@ -22,10 +22,10 @@ app.use((req, res, next) => {
   }
 });
 
-// Request logging middleware
+// 4. Request logging middleware
 app.use(morgan('dev'));
 
-// Import routes
+// 5. Import all route modules
 const authRouter = require('./routes/auth.routes.js');
 const profileRouter = require('./routes/profile.routes.js');
 const nutritionRouter = require('./routes/nutrition.routes.js');
@@ -38,8 +38,9 @@ const resourcesRouter = require('./routes/resources.routes.js');
 const agentRouter = require('./routes/agent.routes.js');
 const analyticsRouter = require('./routes/analytics.routes.js');
 const notificationsRouter = require('./routes/notifications.routes.js');
+const paymentRoutes = require('./routes/payment.routes.js'); // Added Chapa/Telebirr payment routes
 
-// Mount routes
+// 6. Mount all routes cleanly on `app`
 app.use('/api/auth', authRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/nutrition', nutritionRouter);
@@ -52,6 +53,7 @@ app.use('/api/resources', resourcesRouter);
 app.use('/api/agent', agentRouter);
 app.use('/api/analytics', analyticsRouter);
 app.use('/api/notifications', notificationsRouter);
+app.use('/api/payment', paymentRoutes); // Mounted Chapa payment gateway
 
 /**
  * @route GET /api/health
@@ -60,10 +62,8 @@ app.use('/api/notifications', notificationsRouter);
  */
 app.get('/api/health', async (req, res) => {
   try {
-    // Verify database connectivity by running a simple query
     const dbResult = await query('SELECT NOW()');
     
-    // If the query succeeds, respond with an UP status and the current time from the DB
     return res.status(200).json({
       status: 'UP',
       timestamp: new Date().toISOString(),
@@ -75,7 +75,6 @@ app.get('/api/health', async (req, res) => {
       }
     });
   } catch (error) {
-    // If the database query fails, log the error and respond with a DOWN status
     console.error('Health check failed:', error);
     return res.status(500).json({
       status: 'DOWN',

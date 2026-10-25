@@ -139,6 +139,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goalDiabetes => 'Diabetes Management';
 
   @override
+  String get biometricTitle => 'Biometric Inputs';
+
+  @override
+  String get weightLabel => 'Weight (kg)';
+
+  @override
+  String get heightLabel => 'Height (cm)';
+
+  @override
+  String get ageLabel => 'Age';
+
+  @override
+  String get genderLabel => 'Gender';
+
+  @override
+  String get male => 'Male';
+
+  @override
+  String get female => 'Female';
+
+  @override
+  String get activityLevelLabel => 'Activity Level';
+
+  @override
+  String get activitySedentary => 'Sedentary';
+
+  @override
+  String get activityLight => 'Light';
+
+  @override
+  String get activityModerate => 'Moderate';
+
+  @override
+  String get activityActive => 'Active';
+
+  @override
+  String get activityVeryActive => 'Very Active';
+
+  @override
+  String get autoCalculate => 'Auto-Calculate Targets';
+
+  @override
+  String get calculating => 'Calculating...';
+
+  @override
   String get dailyTargetsTitle => 'Daily Nutritional Targets';
 
   @override

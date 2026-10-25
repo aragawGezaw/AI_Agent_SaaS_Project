@@ -25,8 +25,8 @@ class NotificationService {
         '/notifications/register-token',
         data: {
           'token': token,
-          if (deviceType != null) 'deviceType': deviceType,
-          if (deviceName != null) 'deviceName': deviceName,
+          ...deviceType != null ? {'deviceType': deviceType} : {},
+          ...deviceName != null ? {'deviceName': deviceName} : {},
         },
       );
       return response.statusCode == 200;

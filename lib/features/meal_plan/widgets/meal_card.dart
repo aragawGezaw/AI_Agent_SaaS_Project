@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/meal_plan.dart';
+import 'meal_detail_sheet.dart'; // Import your step-by-step recipe sheet
 
 /// Reusable card widget that displays a single meal from an AI-generated meal plan.
 class MealCard extends StatelessWidget {
@@ -16,11 +17,16 @@ class MealCard extends StatelessWidget {
 
   IconData _mealIcon() {
     switch (meal.mealType.toLowerCase()) {
-      case 'breakfast': return Icons.free_breakfast_rounded;
-      case 'lunch':     return Icons.lunch_dining_rounded;
-      case 'dinner':    return Icons.dinner_dining_rounded;
-      case 'snack':     return Icons.cookie_rounded;
-      default:          return Icons.restaurant_rounded;
+      case 'breakfast':
+        return Icons.free_breakfast_rounded;
+      case 'lunch':
+        return Icons.lunch_dining_rounded;
+      case 'dinner':
+        return Icons.dinner_dining_rounded;
+      case 'snack':
+        return Icons.cookie_rounded;
+      default:
+        return Icons.restaurant_rounded;
     }
   }
 
@@ -61,74 +67,164 @@ class MealCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(isAm, mealColor, glColor, glBg),
-            if (meal.isFastingMeal) ..._buildFastingBadge(isAm),
-            if (meal.proteinG > 0 || meal.carbsG > 0 || meal.fatG > 0) ..._buildMacros(isAm),
-          ],
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () => showMealDetailSheet(
+            context,
+            meal,
+          ), // Opens step-by-step recipe instructions
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(isAm, mealColor, glColor, glBg),
+                if (meal.isFastingMeal) ..._buildFastingBadge(isAm),
+                if (meal.proteinG > 0 || meal.carbsG > 0 || meal.fatG > 0)
+                  ..._buildMacros(isAm),
+                if (showDeleteAction && onDelete != null) ...[
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton.icon(
+                      onPressed: onDelete,
+                      icon: const Icon(
+                        Icons.delete_outline_rounded,
+                        size: 16,
+                        color: Colors.red,
+                      ),
+                      label: Text(
+                        isAm ? 'ሰርዝ' : 'Delete',
+                        style: const TextStyle(fontSize: 12, color: Colors.red),
+                      ),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // Private Build Helpers
-  // ---------------------------------------------------------------------------
-
   Widget _buildHeader(bool isAm, Color mealColor, Color glColor, Color glBg) {
-    return Row(children: [
-      Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: mealColor.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(10),
+    final mealTypeLabel = meal.getMealTypeLabel(isAm ? 'am' : 'en');
+    final foodTitle = meal.foodName ?? mealTypeLabel;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: mealColor.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(_mealIcon(), color: mealColor, size: 22),
         ),
-        child: Icon(_mealIcon(), color: mealColor, size: 22),
-      ),
-      const SizedBox(width: 10),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(meal.getMealTypeLabel(isAm ? 'am' : 'en'), style: TextStyle(fontSize: 12, color: mealColor, fontWeight: FontWeight.w600)),
-            Text('${meal.calories.toStringAsFixed(0)} kcal', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          ],
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                mealTypeLabel,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: mealColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                foodTitle,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF212121),
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                '${meal.calories.toStringAsFixed(0)} kcal',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey.shade700,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: glBg,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: glColor.withValues(alpha: 0.4)),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: glBg,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: glColor.withValues(alpha: 0.4)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.bolt_rounded, size: 14, color: glColor),
+              const SizedBox(width: 4),
+              Text(
+                'GL ${meal.glycemicLoad.toStringAsFixed(1)}',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: glColor,
+                ),
+              ),
+            ],
+          ),
         ),
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Icon(Icons.bolt_rounded, size: 14, color: glColor),
-          const SizedBox(width: 4),
-          Text('GL ${meal.glycemicLoad.toStringAsFixed(1)}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: glColor)),
-        ]),
-      ),
-    ]);
+      ],
+    );
   }
 
   List<Widget> _buildFastingBadge(bool isAm) => [
-    const SizedBox(height: 8),
+    const SizedBox(height: 10),
     Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
         color: const Color(0xFFFFF8E1),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: const Color(0xFFFFB300).withValues(alpha: 0.5)),
+        border: Border.all(
+          color: const Color(0xFFFFB300).withValues(alpha: 0.5),
+        ),
       ),
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        const Icon(Icons.schedule_rounded, size: 12, color: Color(0xFFF57F17)),
-        const SizedBox(width: 4),
-        Text(isAm ? 'የጾም ምግብ' : 'Fasting Meal', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFFF57F17))),
-      ]),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.schedule_rounded,
+            size: 12,
+            color: Color(0xFFF57F17),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            isAm ? 'የጾም ምግብ' : 'Fasting Meal',
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFFF57F17),
+            ),
+          ),
+        ],
+      ),
     ),
   ];
 
@@ -136,29 +232,69 @@ class MealCard extends StatelessWidget {
     const SizedBox(height: 10),
     const Divider(height: 1, thickness: 0.5),
     const SizedBox(height: 8),
-    Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-      MacroChip(label: isAm ? 'ፕሮቲን' : 'Protein', value: '${meal.proteinG.toStringAsFixed(1)}g', color: const Color(0xFFD32F2F)),
-      MacroChip(label: isAm ? 'ካርብስ' : 'Carbs', value: '${meal.carbsG.toStringAsFixed(1)}g', color: const Color(0xFFF57C00)),
-      MacroChip(label: isAm ? 'ስብ' : 'Fat', value: '${meal.fatG.toStringAsFixed(1)}g', color: const Color(0xFF1976D2)),
-    ]),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        MacroChip(
+          label: isAm ? 'ፕሮቲን' : 'Protein',
+          value: '${meal.proteinG.toStringAsFixed(1)}g',
+          color: const Color(0xFFD32F2F),
+        ),
+        MacroChip(
+          label: isAm ? 'ካርቦሃይድሬት' : 'Carbs',
+          value: '${meal.carbsG.toStringAsFixed(1)}g',
+          color: const Color(0xFFF57C00),
+        ),
+        MacroChip(
+          label: isAm ? 'ስብ' : 'Fat',
+          value: '${meal.fatG.toStringAsFixed(1)}g',
+          color: const Color(0xFF1976D2),
+        ),
+      ],
+    ),
   ];
 }
 
-/// Tiny row showing a single macro nutrient label + value.
 class MacroChip extends StatelessWidget {
   final String label;
   final String value;
   final Color color;
 
-  const MacroChip({super.key, required this.label, required this.value, required this.color});
+  const MacroChip({
+    super.key,
+    required this.label,
+    required this.value,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisSize: MainAxisSize.min, children: [
-      Container(width: 8, height: 8, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
-      const SizedBox(width: 5),
-      Text('$label: ', style: TextStyle(fontSize: 12, color: Colors.grey.shade700, fontWeight: FontWeight.w500)),
-      Text(value, style: const TextStyle(fontSize: 12, color: Color(0xFF212121), fontWeight: FontWeight.w700)),
-    ]);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        ),
+        const SizedBox(width: 5),
+        Text(
+          '$label: ',
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.grey.shade700,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color(0xFF212121),
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
+    );
   }
 }

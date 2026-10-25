@@ -3,10 +3,12 @@ import 'package:dio/dio.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/storage/secure_storage_service.dart';
 import '../models/subscription_model.dart';
+import '../services/subscription_service.dart';
 
 /// Provider for managing subscription state across the app
 class SubscriptionProvider extends ChangeNotifier {
   final SecureStorageService _storage = SecureStorageService();
+  final SubscriptionService _subscriptionService = SubscriptionService();
   final Dio _dio = ApiClient().dio;
 
   Subscription? _currentSubscription;
@@ -67,17 +69,21 @@ class SubscriptionProvider extends ChangeNotifier {
     }
   }
 
-  /// Create a Stripe checkout session for premium subscription
-  Future<String?> createCheckoutSession() async {
+  /// Create a Chapa checkout session supporting multi-currency (ETB for local, USD for diaspora)
+  Future<String?> createCheckoutSession({
+    String amount = '99',
+    String currency = 'ETB',
+  }) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      final response = await _dio.post('/subscription/checkout');
-      if (response.statusCode == 200 && response.data != null) {
-        return response.data['url'] as String?;
-      }
+      final url = await _subscriptionService.createCheckoutSession(
+        amount: amount,
+        currency: currency,
+      );
+      return url;
     } on DioException catch (e) {
       final data = e.response?.data;
       _error = (data is Map && data['message'] != null)
@@ -92,7 +98,34 @@ class SubscriptionProvider extends ChangeNotifier {
     return null;
   }
 
-  /// Open Stripe billing portal
+  /// Verifies transaction with backend and refreshes active subscription
+  Future<bool> verifyAndCompletePayment(String txRef) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final success = await _subscriptionService.verifyPayment(txRef);
+      if (success) {
+        await loadSubscription();
+      }
+      return success;
+    } on DioException catch (e) {
+      final data = e.response?.data;
+      _error = (data is Map && data['message'] != null)
+          ? data['message'].toString()
+          : e.message ?? 'Failed to verify payment';
+      return false;
+    } catch (e) {
+      _error = e.toString();
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// Open billing portal
   Future<String?> openBillingPortal() async {
     _isLoading = true;
     _error = null;

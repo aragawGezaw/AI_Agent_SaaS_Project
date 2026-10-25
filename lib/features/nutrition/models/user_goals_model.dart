@@ -30,21 +30,46 @@ class UserGoals {
     required this.updatedAt,
   });
 
+  // Safe helper to parse integers from dynamic JSON values (int, num, or String)
+  static int? _parseInt(dynamic val) {
+    if (val == null) return null;
+    if (val is int) return val;
+    if (val is num) return val.toInt();
+    if (val is String)
+      return int.tryParse(val) ?? double.tryParse(val)?.toInt();
+    return null;
+  }
+
+  // Safe helper to parse doubles from dynamic JSON values (double, num, or String)
+  static double? _parseDouble(dynamic val) {
+    if (val == null) return null;
+    if (val is double) return val;
+    if (val is num) return val.toDouble();
+    if (val is String) return double.tryParse(val);
+    return null;
+  }
+
   factory UserGoals.fromJson(Map<String, dynamic> json) {
     return UserGoals(
-      id: json['id'] as String,
-      userId: json['user_id'] as String,
-      dailyCalorieTarget: json['daily_calorie_target'] as int?,
-      dailyProteinTargetG: (json['daily_protein_target_g'] as num?)?.toDouble(),
-      dailyCarbsTargetG: (json['daily_carbs_target_g'] as num?)?.toDouble(),
-      dailyFatTargetG: (json['daily_fat_target_g'] as num?)?.toDouble(),
-      glycemicLoadLowThreshold: (json['glycemic_load_low_threshold'] as num?)?.toDouble() ?? 10.0,
-      glycemicLoadMediumThreshold: (json['glycemic_load_medium_threshold'] as num?)?.toDouble() ?? 19.0,
-      dailyGlycemicLoadLimit: (json['daily_glycemic_load_limit'] as num?)?.toDouble(),
-      preferredLanguage: json['preferred_language'] as String,
-      goalFocus: json['goal_focus'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
+      id: json['id']?.toString() ?? '',
+      userId: json['user_id']?.toString() ?? '',
+      dailyCalorieTarget: _parseInt(json['daily_calorie_target']),
+      dailyProteinTargetG: _parseDouble(json['daily_protein_target_g']),
+      dailyCarbsTargetG: _parseDouble(json['daily_carbs_target_g']),
+      dailyFatTargetG: _parseDouble(json['daily_fat_target_g']),
+      glycemicLoadLowThreshold:
+          _parseDouble(json['glycemic_load_low_threshold']) ?? 10.0,
+      glycemicLoadMediumThreshold:
+          _parseDouble(json['glycemic_load_medium_threshold']) ?? 19.0,
+      dailyGlycemicLoadLimit: _parseDouble(json['daily_glycemic_load_limit']),
+      preferredLanguage: json['preferred_language']?.toString() ?? 'en',
+      goalFocus: json['goal_focus']?.toString() ?? 'maintenance',
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'].toString())
+          : DateTime.now(),
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'].toString())
+          : DateTime.now(),
     );
   }
 
@@ -89,9 +114,12 @@ class UserGoals {
       dailyProteinTargetG: dailyProteinTargetG ?? this.dailyProteinTargetG,
       dailyCarbsTargetG: dailyCarbsTargetG ?? this.dailyCarbsTargetG,
       dailyFatTargetG: dailyFatTargetG ?? this.dailyFatTargetG,
-      glycemicLoadLowThreshold: glycemicLoadLowThreshold ?? this.glycemicLoadLowThreshold,
-      glycemicLoadMediumThreshold: glycemicLoadMediumThreshold ?? this.glycemicLoadMediumThreshold,
-      dailyGlycemicLoadLimit: dailyGlycemicLoadLimit ?? this.dailyGlycemicLoadLimit,
+      glycemicLoadLowThreshold:
+          glycemicLoadLowThreshold ?? this.glycemicLoadLowThreshold,
+      glycemicLoadMediumThreshold:
+          glycemicLoadMediumThreshold ?? this.glycemicLoadMediumThreshold,
+      dailyGlycemicLoadLimit:
+          dailyGlycemicLoadLimit ?? this.dailyGlycemicLoadLimit,
       preferredLanguage: preferredLanguage ?? this.preferredLanguage,
       goalFocus: goalFocus ?? this.goalFocus,
       createdAt: createdAt ?? this.createdAt,

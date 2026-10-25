@@ -1,4 +1,4 @@
-const app = require('./src/app.js');
+const app = require('../src/app.js');
 const http = require('http');
 
 function request({ method, path, body, token }) {

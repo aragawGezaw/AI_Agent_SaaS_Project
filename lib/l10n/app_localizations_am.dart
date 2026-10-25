@@ -138,6 +138,51 @@ class AppLocalizationsAm extends AppLocalizations {
   String get goalDiabetes => 'የሲካር በሽት ማሲተዳደር';
 
   @override
+  String get biometricTitle => 'የልጅነት አሳማፃዊ ምግቦች';
+
+  @override
+  String get weightLabel => 'ዘር (ኪግረም)';
+
+  @override
+  String get heightLabel => 'ቀንድ (ሰንቲሜትር)';
+
+  @override
+  String get ageLabel => 'ዕድሜ';
+
+  @override
+  String get genderLabel => 'ሴትኛ';
+
+  @override
+  String get male => 'የወንድ';
+
+  @override
+  String get female => 'ሴት';
+
+  @override
+  String get activityLevelLabel => 'የተነሣ ፍላጎት';
+
+  @override
+  String get activitySedentary => 'እንገሻ አይገኝም';
+
+  @override
+  String get activityLight => 'ባህሪ አስገኘት';
+
+  @override
+  String get activityModerate => 'መካከል አስገኘት';
+
+  @override
+  String get activityActive => 'አገናኝ';
+
+  @override
+  String get activityVeryActive => 'በጣም አገናኝ';
+
+  @override
+  String get autoCalculate => 'አዶዚ ይሂድ';
+
+  @override
+  String get calculating => 'የሚለው ለመያዝ...';
+
+  @override
   String get dailyTargetsTitle => 'የሻምንት የአመጋወብ ግቮች';
 
   @override

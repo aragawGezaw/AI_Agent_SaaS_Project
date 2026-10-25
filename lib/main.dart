@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:provider/provider.dart';
-import 'package:ai_agent_saas_project/features/auth/auth_state.dart';
-import 'package:ai_agent_saas_project/features/auth/auth_screen.dart';
-import 'package:ai_agent_saas_project/features/nutrition/screens/meal_logging_screen.dart';
-import 'package:ai_agent_saas_project/features/nutrition/screens/meal_history_screen.dart';
-import 'package:ai_agent_saas_project/features/nutrition/screens/settings_screen.dart';
-import 'package:ai_agent_saas_project/features/education/providers/education_provider.dart';
-import 'package:ai_agent_saas_project/features/education/screens/resources_screen.dart';
-import 'package:ai_agent_saas_project/features/meal_plan/providers/meal_plan_provider.dart';
-import 'package:ai_agent_saas_project/features/meal_plan/screens/meal_plan_screen.dart';
-import 'package:ai_agent_saas_project/features/subscription/providers/subscription_provider.dart';
-import 'package:ai_agent_saas_project/features/subscription/screens/paywall_screen.dart';
-import 'package:ai_agent_saas_project/features/subscription/screens/subscription_success_screen.dart';
-import 'package:ai_agent_saas_project/features/notifications/providers/notification_provider.dart';
-import 'package:ai_agent_saas_project/features/notifications/screens/notification_settings_screen.dart';
-import 'package:ai_agent_saas_project/l10n/app_localizations.dart';
-import 'package:ai_agent_saas_project/core/providers/language_provider.dart';
-import 'package:ai_agent_saas_project/core/providers/user_goals_provider.dart';
+
+import 'core/routes/app_routes.dart';
+import 'core/providers/language_provider.dart';
+import 'core/providers/user_goals_provider.dart';
+import 'features/auth/controllers/auth_state.dart';
+import 'features/education/providers/education_provider.dart';
+import 'features/meal_plan/providers/meal_plan_provider.dart';
+import 'features/subscription/providers/subscription_provider.dart';
+import 'features/notifications/providers/notification_provider.dart';
+import 'features/subscription/screens/subscription_success_screen.dart';
+import 'l10n/app_localizations.dart';
 
 /// Global navigator key for routing paywall pushes from interceptors.
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -49,127 +43,29 @@ class MyApp extends StatelessWidget {
             title: 'Smart Nutrition and Health',
             theme: ThemeData(primarySwatch: Colors.green, useMaterial3: true),
             locale: languageProvider.locale,
-            initialRoute: '/',
-            routes: {
-              '/': (context) => const AuthScreen(),
-              '/home': (context) => Scaffold(
-                appBar: AppBar(
-                  title: const Text('Smart Nutrition & Health'),
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.notifications_outlined),
-                      tooltip: 'Notifications',
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/notifications');
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.settings_rounded),
-                      tooltip: 'Settings',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const SettingsScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Welcome to Smart Nutrition & Health Home!',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                        ),
-                        icon: const Icon(Icons.restaurant_menu_rounded),
-                        label: const Text('Open Meal Logger & GL Tracker'),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const MealLoggingScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF2E7D32),
-                          foregroundColor: Colors.white,
-                        ),
-                        icon: const Icon(Icons.menu_book),
-                        label: const Text('Educational Resource Hub'),
-                        onPressed: () =>
-                            Navigator.pushNamed(context, '/resources'),
-                      ),
-                      const SizedBox(height: 12),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6A1B9A),
-                          foregroundColor: Colors.white,
-                        ),
-                        icon: const Icon(Icons.auto_awesome_rounded),
-                        label: const Text('AI Meal Planner'),
-                        onPressed: () =>
-                            Navigator.pushNamed(context, '/meal-plan'),
-                      ),
-                      const SizedBox(height: 12),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange.shade700,
-                          foregroundColor: Colors.white,
-                        ),
-                        icon: const Icon(Icons.workspace_premium_rounded),
-                        label: const Text('Upgrade to Premium'),
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const PaywallScreen(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              '/meal-plan': (context) => const MealPlanScreen(),
-              '/meal-logging': (context) => const MealLoggingScreen(),
-              '/meal-history': (context) => const MealHistoryScreen(),
-              '/settings': (context) => const SettingsScreen(),
-              '/resources': (context) => const ResourcesScreen(),
-              '/paywall': (context) => const PaywallScreen(),
-              '/subscription/success': (context) {
-                final sessionId = Uri.base.queryParameters['session_id'];
-                return SubscriptionSuccessScreen(sessionId: sessionId);
-              },
-              '/notifications': (context) => const NotificationSettingsScreen(),
-              '/login': (context) => const AuthScreen(),
-              '/auth': (context) => const AuthScreen(),
-            },
+            initialRoute: AppRoutes.login,
+            routes: AppRoutes.routes,
             onGenerateRoute: (settings) {
               final uri = Uri.tryParse(settings.name ?? '');
-              if (uri != null && uri.path == '/subscription/success') {
+
+              // Handle both Chapa (/payment-success or /subscription/success) and Stripe returns
+              if (uri != null &&
+                  (uri.path == '/subscription/success' ||
+                      uri.path == '/payment-success')) {
+                final txRef =
+                    uri.queryParameters['tx_ref'] ??
+                    Uri.base.queryParameters['tx_ref'];
+
                 final sessionId =
                     uri.queryParameters['session_id'] ??
                     Uri.base.queryParameters['session_id'];
+
                 return MaterialPageRoute(
                   settings: settings,
-                  builder: (_) =>
-                      SubscriptionSuccessScreen(sessionId: sessionId),
+                  builder: (_) => SubscriptionSuccessScreen(
+                    txRef: txRef,
+                    sessionId: sessionId,
+                  ),
                 );
               }
               return null;

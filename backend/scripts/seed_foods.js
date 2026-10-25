@@ -1,4 +1,4 @@
-const { query, pool } = require('./db/index.js');
+const { query, pool } = require('../src/db/index.js');
 
 /**
  * Seed script to populate indigenous Ethiopian foods and global foods
