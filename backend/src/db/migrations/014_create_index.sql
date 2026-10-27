@@ -1,3 +1,4 @@
+-- migration 014_create_index
 -- Index to quickly fetch a user's meal plans by user ID and specific dates
 CREATE INDEX IF NOT EXISTS idx_meal_plans_user_date ON meal_plans(user_id, plan_date);
 

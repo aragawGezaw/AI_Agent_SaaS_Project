@@ -10,9 +10,10 @@ const poolConfig = process.env.DATABASE_URL
       connectionString: String(process.env.DATABASE_URL || ''),
       // Required for cloud-hosted databases (Supabase, Neon, Render, etc.) in production
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-      max: 20,                       // Maximum number of clients in the pool
+      max: 20,                          // Maximum number of clients in the pool
       idleTimeoutMillis: 30000,      // Close idle clients after 30 seconds
-      connectionTimeoutMillis: 2000, // Timeout after 2 seconds if connection fails
+      connectionTimeoutMillis: 10000, // Timeout after 10 seconds if connection fails
+      family: 4,                      // Forces IPv4 to bypass Render IPv6 ENETUNREACH error
     }
   : {
       user: process.env.DB_USER,
@@ -22,7 +23,8 @@ const poolConfig = process.env.DATABASE_URL
       port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 5432,
       max: 20,
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 2000,
+      connectionTimeoutMillis: 10000,
+      family: 4,
     };
 
 const pool = new Pool(poolConfig);
